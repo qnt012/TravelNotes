@@ -6,7 +6,7 @@
             <span class="input-else">
               <input class="writer-input" type="text" placeholder="writer" v-model="writer">
               <input type="checkbox" id="due" class="duedate" v-model="due">
-              <label for="due">due date</label>
+              <label for="due" class="due-label">due date</label>
               <input v-if="due" type="date" v-model="date">
             </span>
             <div class="note-editor-bottom">
