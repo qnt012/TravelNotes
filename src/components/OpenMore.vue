@@ -9,7 +9,7 @@ export default {
   methods: {
     openMore: function () {
       this.$emit("openMore");
-    },
-  },
+    }
+  }
 };
 </script>
