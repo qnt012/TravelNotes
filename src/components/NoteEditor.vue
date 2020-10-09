@@ -39,6 +39,7 @@ export default {
       );
       this.title = "";
       (this.text = ""), (this.theme = "");
+      this.due = false;
       this.date = "";
       this.writer = "";
     },

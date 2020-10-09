@@ -9,8 +9,8 @@
                 <span >{{ note.title}}</span>
                 <p class="note-text">{{ note.text }}</p>
                 <div class="note-bottom">
-                  <span class="date-text" v-if="note.date != ''">due date: {{note.date}}</span>
-                  <div class="writer-text" v-if="note.writer != ''"><img src="./assets/writer.png" id="img-writer"> {{note.writer}}</div>
+                  <span class="date-text" v-if="note.date">due date: {{note.date}}</span>
+                  <div class="writer-text" v-if="note.writer"><img src="./assets/writer.png" id="img-writer"> {{note.writer}}</div>
                 </div>
             </div>
         </div>
