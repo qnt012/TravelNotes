@@ -8,6 +8,10 @@
                 <span class="delete" @click.prevent="deleteNote(index)"><i class="fas fa-times"></i></span> 
                 <span >{{ note.title}}</span>
                 <p class="note-text">{{ note.text }}</p>
+                <div class="note-bottom">
+                  <span class="date-text" v-if="note.date">due date: {{note.date}}</span>
+                  <div class="writer-text" v-if="note.writer"><img src="./assets/writer.png" id="img-writer"> {{note.writer}}</div>
+                </div>
             </div>
         </div>
     </div>
@@ -15,58 +19,52 @@
 </template>
 
 <script>
-import NoteEditor from './components/NoteEditor.vue';
-import Header from './components/Header.vue';
+import NoteEditor from "./components/NoteEditor.vue";
+import Header from "./components/Header.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   data: function() {
     return {
       editorOpen: false,
-      notes: [
-        {
-          title: 'Code',
-          text: '1131111222',
-          theme: '#FF8A80',
-        },
-        {
-          title: 'event',
-          text: 'event',
-          theme: '#DDA0DD',
-        },
-      ],      
-    }
+      notes: []
+    };
   },
-	computed: {
-		
-	},
-  methods: {   
-    newNote(title, text, theme) {
-      this.notes.push({title: title, text: text, theme: theme});
+  computed: {},
+  methods: {
+    newNote(title, text, theme, date, writer) {
+      this.notes.push({
+        title: title,
+        text: text,
+        theme: theme,
+        date: date,
+        writer: writer
+      });
     },
     deleteNote(index) {
-      this.notes.splice(index, 1)
-    },
+      this.notes.splice(index, 1);
+    }
   },
   mounted() {
-    if (localStorage.getItem('notes')) this.notes = JSON.parse(localStorage.getItem('notes'));
+    if (localStorage.getItem("notes"))
+      this.notes = JSON.parse(localStorage.getItem("notes"));
   },
   watch: {
     notes: {
       handler() {
         var newNotes = this.notes;
-        localStorage.setItem('notes', JSON.stringify(newNotes));
+        localStorage.setItem("notes", JSON.stringify(newNotes));
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   components: {
     appNoteEditor: NoteEditor,
     appHeader: Header
   }
-}
+};
 </script>
 
 <style lang="scss">
-  @import '/styles/global.scss';
+@import "/styles/global.scss";
 </style>
