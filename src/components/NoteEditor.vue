@@ -1,24 +1,10 @@
 <template>
   <div class="note-grid">
     <div class="note-editor">
-      <input
-        class="title-input"
-        type="text"
-        v-model="title"
-        placeholder="Title"
-      />
-      <textarea
-        rows="10"
-        v-model="text"
-        placeholder="Take a note..."
-      ></textarea>
+      <input class="title-input" type="text" v-model="title" placeholder="Title"/>
+      <textarea rows="10" v-model="text" placeholder="Take a note..."></textarea>
       <span class="input-else">
-        <input
-          class="writer-input"
-          type="text"
-          placeholder="writer"
-          v-model="writer"
-        />
+        <input class="writer-input" type="text" placeholder="writer" v-model="writer"/>
         <input type="checkbox" id="due" class="duedate" v-model="due" />
         <label for="due" class="due-label">due date</label>
         <input v-if="due" type="date" v-model="date" />
@@ -28,9 +14,7 @@
         <input type="color" id="favcolor" value="#ffffff" v-model="theme" />
       </div>
       <div class="note-editor-bottom">
-        <button @click="createNew" class="fas fas-check-circle">
-          <i class="fas fa-check-circle"></i>
-        </button>
+        <button @click="createNew" class="fas fas-check-circle"><i class="fas fa-check-circle"></i></button>
       </div>
     </div>
   </div>
