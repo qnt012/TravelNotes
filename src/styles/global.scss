@@ -128,8 +128,7 @@ body {
     top: 25px;
 }
 
-.input-else {
-    color: #ccc;
+.input-else, .selectcolor {
     font-size: 15px;
 }
 
@@ -172,5 +171,11 @@ body {
 .menuselect {
     position: absolute;
     right: 5px;
+    top: 50px;
+}
+
+#fav-color {
+    position: absolute;
+    right: 20px;
     top: 50px;
 }

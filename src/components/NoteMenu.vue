@@ -1,7 +1,23 @@
 <template>
-    <select style="z-index:2;" class="menuselect" v-model="selected">
-        <option selected disabled value="">목록 선택</option>
-        <option value="recolor">색상 변경</option>
-        <option value="category">카테고리 선택</option>
-    </select>
+  <div class="noteMenu">
+    <input type="color" id="fav-color" v-model="theme" @change="reColor" />
+  </div>
 </template>
+
+<script>
+export default {
+  props: ["notesData"],
+  data: function () {
+    return {
+      theme: "",
+      menuopen: this.notesData[this.notesData.index].moreOpen,
+    };
+  },
+  methods: {
+    reColor() {
+      this.$emit("recolorMenu", this.theme);
+      this.menuopen = false;
+    },
+  },
+};
+</script>

@@ -13,14 +13,18 @@
         class="note"
         :style="{ 'background-color': note.theme }"
       >
-        <div>
+        <div @click="selected= index">
           <span class="delete" @click.prevent="deleteNote(index)"
             ><i class="fas fa-times"></i
           ></span>
           <app-open-more
             @openMore="note.moreOpen = !note.moreOpen"
           ></app-open-more>
-          <app-note-menu v-if="note.moreOpen"></app-note-menu>
+          <app-note-menu
+            :notesData="notes"
+            v-if="note.moreOpen"
+            @recolorMenu="reColor"
+          ></app-note-menu>
           <span>{{ note.title }}</span>
           <p class="note-text">{{ note.text }}</p>
           <div class="note-bottom">
@@ -46,10 +50,11 @@ import NoteMenu from "./components/NoteMenu.vue";
 
 export default {
   name: "App",
-  data: function () {
+  data: function() {
     return {
       editorOpen: false,
       notes: [],
+      selected: -1
     };
   },
   computed: {},
@@ -61,12 +66,16 @@ export default {
         theme: theme,
         date: date,
         writer: writer,
-        moreOpen: false,
+        moreOpen: false
       });
     },
     deleteNote(index) {
       this.notes.splice(index, 1);
     },
+    reColor(theme) {
+      this.notes[this.selected].theme = theme;
+      this.notes.moreOpen = false;
+    }
   },
   mounted() {
     if (localStorage.getItem("notes"))
@@ -78,15 +87,15 @@ export default {
         var newNotes = this.notes;
         localStorage.setItem("notes", JSON.stringify(newNotes));
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   components: {
     appNoteEditor: NoteEditor,
     appHeader: Header,
     appOpenMore: OpenMore,
-    appNoteMenu: NoteMenu,
-  },
+    appNoteMenu: NoteMenu
+  }
 };
 </script>
 
