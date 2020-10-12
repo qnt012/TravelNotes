@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <app-header @openEditor="editorOpen = !editorOpen, updaterOpen = false" ></app-header>
-    <app-note-editor v-if="editorOpen"  @noteAdded="newNote" @noteDeleted="deleteNote" ></app-note-editor>        
+    <app-note-editor v-if="editorOpen"  @noteAdded="newNote" @noteDeleted="deleteNote" @categoryAdded="newCategory"></app-note-editor>        
     <app-note-updater :notesData = notes v-if="updaterOpen == true && editorOpen == false" @noteUpdated="updateNewNote"></app-note-updater>
+    <app-bar :categoriesData=categories :notesData = notes @filteringNote="notesFiltering"></app-bar>
     <div style="z-index: 1" class="noteContainer">
-        <div v-for="(note, index) in notes" :key="`note-${index}`" class="note" :style="{'background-color': note.theme}">      
+        <div v-for="(note, index) in notes" :key="`note-${index}`" class="note" :style="{'background-color': note.theme, 'display': note.display}">      
             <div @click="selected=index">
-                <span class="update" @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer), editorOpen=false, updaterOpen = !updaterOpen"><i class="fas fa-edit" id="fa-edit"></i></span>
+                <span class="update" @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer,note.category), editorOpen=false, updaterOpen = !updaterOpen"><i class="fas fa-edit" id="fa-edit"></i></span>
                 <span class="delete" @click.prevent="deleteNote(index), updaterOpen = true, editorOpen = false"><i class="fas fa-times"></i></span> 
                 <app-open-more @openMore="note.moreOpen = !note.moreOpen"></app-open-more>
                 <app-note-menu :notesData="notes" v-if="note.moreOpen" @recolorMenu="reColor"></app-note-menu>
@@ -28,7 +29,8 @@ import NoteEditor from "./components/NoteEditor.vue";
 import Header from "./components/Header.vue";
 import OpenMore from "./components/OpenMore.vue";
 import NoteMenu from "./components/NoteMenu.vue";
-import NoteUpdater from './components/NoteUpdater.vue';
+import NoteUpdater from "./components/NoteUpdater.vue";
+import Bar from "./components/Bar.vue";
 
 export default {
   name: "App",
@@ -37,30 +39,58 @@ export default {
       editorOpen: false,
       updaterOpen: false,
       notes: [],
-      selected: -1
+      selected: -1,
+      categories: ["to-do", "meeting", "task"]
     };
   },
   computed: {},
   methods: {
-    newNote(title, text, theme, date, writer) {
+    newNote(title, text, theme, date, writer, category) {
       this.notes.push({
         title: title,
         text: text,
         theme: theme,
         date: date,
         writer: writer,
+        category: category,
+        display: "auto",
         moreOpen: false
       });
     },
     deleteNote(index) {
-      this.notes.splice(index, 1)
+      this.notes.splice(index, 1);
+    },
+    newCategory(category) {
+      this.categories.push(category);
+    },
+    notesFiltering(category) {
+      for (var i = 0; i < this.notes.length; i++) {
+        if (this.notes[i].category == category || category == "") {
+          this.notes[i].display = "inline-block";
+        } else {
+          this.notes[i].display = "none";
+        }
+      }
     },
     updateNote(title, text, theme, index, date, writer) {
-      this.notes[this.index] = {title: title, text: text, theme: theme, index : index, date:date, writer:writer}
+      this.notes[this.index] = {
+        title: title,
+        text: text,
+        theme: theme,
+        index: index,
+        date: date,
+        writer: writer
+      };
     },
     updateNewNote(title, text, theme, index, date, writer) {
-      this.notes[index] = {title: title, text: text, theme: theme, date:date, writer:writer}
-      this.updaterOpen = false
+      this.notes[index] = {
+        title: title,
+        text: text,
+        theme: theme,
+        date: date,
+        writer: writer
+      };
+      this.updaterOpen = false;
     },
     reColor(theme) {
       this.notes[this.selected].theme = theme;
@@ -85,7 +115,8 @@ export default {
     appHeader: Header,
     appOpenMore: OpenMore,
     appNoteMenu: NoteMenu,
-    appNoteUpdater: NoteUpdater
+    appNoteUpdater: NoteUpdater,
+    appBar: Bar
   }
 };
 </script>
