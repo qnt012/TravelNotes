@@ -43,6 +43,13 @@ export default {
     };
   },
   computed: {},
+  filters: { 
+    capitalize: function (value) { 
+      if (!value) return '' 
+      value = value.toString() 
+      return value.charAt(0).toUpperCase() + value.slice(1) 
+    } 
+  },
   methods: {
     newNote(title, text, theme, date, writer) {
       this.notes.push({title: title, text: text, theme: theme, date: date, writer: writer, moreOpen: false, display: "auto"});
@@ -63,19 +70,23 @@ export default {
     },
     findKeyword(keyword) {
       for (var i = 0; i < this.notes.length; i++) {
-        if (this.notes[i].title == keyword || keyword =='') {
+        this.notes[i].display = "none";
+        if (keyword != ''){
+          if (this.notes[i].title.indexOf(keyword) != -1) {
             this.notes[i].display = "inline-block";
           } 
-        else if (this.notes[i].text == keyword || keyword =='') {
+          if (this.notes[i].text.indexOf(keyword) != -1) {
             this.notes[i].display = "inline-block";
           } 
-        else if (this.notes[i].writer == keyword || keyword =='') {
+          if (this.notes[i].writer.indexOf(keyword)!= -1) {
             this.notes[i].display = "inline-block";
-          }
-          else {
-            this.notes[i].display = "none";
           }
         }
+        else {
+          this.notes[i].display = "inline-block";
+        }
+       
+      }
     },
   },
   mounted() {
