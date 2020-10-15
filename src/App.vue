@@ -67,8 +67,9 @@
           </div>
         </div>
       </div>
-      <div class="noteList"><h2>[Note List]</h2>
-      <app-note-dir></app-note-dir>
+      <div class="noteList">
+        <h2>[Note List]</h2>
+        <app-note-dir :notesData="notes"></app-note-dir>
       </div>
     </div>
   </div>
@@ -80,7 +81,7 @@ import Header from "./components/Header.vue";
 import OpenMore from "./components/OpenMore.vue";
 import NoteMenu from "./components/NoteMenu.vue";
 import NoteUpdater from "./components/NoteUpdater.vue";
-import NoteDir from "./components/NoteDir.vue";
+import NoteDir from "./components/NoteDirectory.vue";
 
 export default {
   name: "App",
