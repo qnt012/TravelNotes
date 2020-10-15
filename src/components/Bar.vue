@@ -10,20 +10,21 @@
 
 <script>
 export default {
-  props: ["notesData", "categoriesData"],
+  props: ["categoriesData"],
   data() {
     return {
-      op: "",
-      firstOp: document.createElement("option")
+      op: ""
     };
   },
   methods: {
     UpdateCategoryOption() {
       var sel = document.getElementById("note-filter");
-      while (sel.hasChildNodes()) {
-        sel.removeChild();
-      }
-      sel.appendChild(this.firstOp);
+      sel.innerHTML = "";
+      sel.appendChild(document.createElement("option"));
+      var none = document.createElement("option");
+      none.setAttribute("label", "--none--");
+      none.setAttribute("value", "--none--");
+      sel.appendChild(none);
       for (var i = 0; i < this.categoriesData.length; i++) {
         var option = document.createElement("option");
         option.setAttribute("label", this.categoriesData[i]);
@@ -34,20 +35,6 @@ export default {
 
     SelectCategory() {
       this.$emit("filteringNote", this.op);
-    }
-  },
-  watch: {
-    notesData: {
-      handler() {
-        this.SelectCategory();
-      },
-      deep: true
-    },
-    categoriesData: {
-      handler() {
-        this.UpdateCategoryOption();
-      },
-      deep: true
     }
   }
 };

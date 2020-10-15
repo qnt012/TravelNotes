@@ -13,15 +13,12 @@
         <label for="favcolor" class="fav-label"> select color </label>
         <input type="color" id="favcolor" value="#ffffff" v-model="theme" />
         
-        <!-- ↓↓↓↓ 카테고리 입력 박스 값 임시 설정 ↓↓↓↓ -->
         <label for="category-input">category </label> 
-        <select v-model = "category" id = "category-input">
-          <option></option>
-          <option label="to-do" value="to-do"></option>
-          <option label="meeting" value="meeting"></option>
-          <option label="task" value="task"></option>
+        <select v-model = "category" id = "category-input" @click="UpdateCategoryOption">
         </select>
-        <!-- 여기까지, 수정 예정 -->
+        <input v-if="openCategory" type="text" class="categoryInput" v-model="addCategory"/>
+        <button v-if="!openCategory" @click="openCategory = !openCategory"><i class="fas fa-plus"></i></button>
+        <button v-if="openCategory" @click="createNewCategory"><i class="fas fa-check"></i></button>
 
       </div>
       <div class="note-editor-bottom">
@@ -33,6 +30,7 @@
 
 <script>
 export default {
+  props: ["categoriesData"],
   data: function() {
     return {
       title: "",
@@ -40,7 +38,9 @@ export default {
       text: "",
       due: false,
       writer: "",
-      category: ""
+      category: "",
+      openCategory: false,
+      addCategory: ""
     };
   },
   methods: {
@@ -65,7 +65,20 @@ export default {
       this.$emit("noteDeleted", index);
     },
     createNewCategory() {
-      this.emit("categoryAdded", this.category);
+      this.openCategory = false;
+      this.$emit("categoryAdded", this.addCategory);
+      this.addCategory = "";
+    },
+    UpdateCategoryOption() {
+      var sel = document.getElementById("category-input");
+      sel.innerHTML = "";
+      sel.appendChild(document.createElement("option"));
+      for (var i = 0; i < this.categoriesData.length; i++) {
+        var option = document.createElement("option");
+        option.setAttribute("label", this.categoriesData[i]);
+        option.setAttribute("value", this.categoriesData[i]);
+        sel.appendChild(option);
+      }
     }
   }
 };

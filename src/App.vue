@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <app-header @openEditor="editorOpen = !editorOpen, updaterOpen = false" ></app-header>
-    <app-note-editor v-if="editorOpen"  @noteAdded="newNote" @noteDeleted="deleteNote" @categoryAdded="newCategory"></app-note-editor>        
-    <app-note-updater :notesData = notes v-if="updaterOpen == true && editorOpen == false" @noteUpdated="updateNewNote"></app-note-updater>
-    <app-bar :categoriesData=categories :notesData = notes @filteringNote="notesFiltering"></app-bar>
+    <app-note-editor :categoriesData=categories v-if="editorOpen"  @noteAdded="newNote" @noteDeleted="deleteNote" @categoryAdded="newCategory"></app-note-editor>        
+    <app-note-updater :notesData = notes v-if="updaterOpen == true && editorOpen == false" @noteUpdated="updateNewNote" ></app-note-updater>
+    <app-bar :categoriesData=categories @filteringNote="notesFiltering"></app-bar>
     <div style="z-index: 1" class="noteContainer">
         <div v-for="(note, index) in notes" :key="`note-${index}`" class="note" :style="{'background-color': note.theme, 'display': note.display}">      
             <div @click="selected=index">
@@ -15,7 +15,7 @@
                 <p class="note-text">{{ note.text }}</p>
                 <div class="note-bottom">
                   <span class="date-text" v-if="note.date">due date: {{note.date}}</span>
-                  <div class="writer-text" v-if="note.writer"><img src="./assets/writer.png" id="img-writer"> {{note.writer}}
+                  <div class="writer-text" v-if="note.writer"><i class="fas fa-user"></i> {{note.writer}}
                 </div>
             </div>
           </div>
@@ -40,12 +40,17 @@ export default {
       updaterOpen: false,
       notes: [],
       selected: -1,
+      filter: "",
       categories: ["to-do", "meeting", "task"]
     };
   },
   computed: {},
   methods: {
     newNote(title, text, theme, date, writer, category) {
+      var dis = "none";
+      if (this.filter == category) {
+        dis = "inline-block";
+      }
       this.notes.push({
         title: title,
         text: text,
@@ -53,7 +58,7 @@ export default {
         date: date,
         writer: writer,
         category: category,
-        display: "auto",
+        display: dis,
         moreOpen: false
       });
     },
@@ -61,11 +66,21 @@ export default {
       this.notes.splice(index, 1);
     },
     newCategory(category) {
+      for (var i = 0; i < this.categories.length; i++) {
+        if (category == "") {
+          alert("값을 입력해주세요.");
+          return;
+        } else if (category == this.categories[i]) {
+          alert("이미 존재하는 카테고리 입니다.");
+          return;
+        }
+      }
       this.categories.push(category);
     },
     notesFiltering(category) {
+      this.filter = category;
       for (var i = 0; i < this.notes.length; i++) {
-        if (this.notes[i].category == category || category == "") {
+        if (this.notes[i].category == category || category == "--none--") {
           this.notes[i].display = "inline-block";
         } else {
           this.notes[i].display = "none";
@@ -100,12 +115,21 @@ export default {
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
+    if (localStorage.getItem("categories"))
+      this.categories = JSON.parse(localStorage.getItem("categories"));
   },
   watch: {
     notes: {
       handler() {
         var newNotes = this.notes;
         localStorage.setItem("notes", JSON.stringify(newNotes));
+      },
+      deep: true
+    },
+    categories: {
+      handler() {
+        var newCategories = this.categories;
+        localStorage.setItem("categories", JSON.stringify(newCategories));
       },
       deep: true
     }
