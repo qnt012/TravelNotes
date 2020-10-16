@@ -21,7 +21,7 @@
           class="note"
           :style="{ 'background-color': note.theme }"
         >
-          <div @click="selected = index">
+          <div @click="selected = index" :id="{ index }">
             <span
               class="update"
               @click="
