@@ -30,7 +30,6 @@ import Header from "./components/Header.vue";
 import OpenMore from "./components/OpenMore.vue";
 import NoteMenu from "./components/NoteMenu.vue";
 import NoteUpdater from './components/NoteUpdater.vue';
-import NoteSearchMenu from './components/NoteSearchMenu.vue';
 
 export default {
   name: "App",
@@ -57,6 +56,8 @@ export default {
     },
     updateNewNote(title, text, theme, index, date, writer) {
       this.notes[index] = {title: title, text: text, theme: theme, date:date, writer:writer}
+      var newNotes = this.notes;
+      localStorage.setItem("notes", JSON.stringify(newNotes));
       this.updaterOpen = false
       this.updaterButton = true
     },
@@ -103,8 +104,7 @@ export default {
     appHeader: Header,
     appOpenMore: OpenMore,
     appNoteMenu: NoteMenu,
-    appNoteUpdater: NoteUpdater,
-    appNoteSearchMenu: NoteSearchMenu
+    appNoteUpdater: NoteUpdater
   }
 };
 </script>
