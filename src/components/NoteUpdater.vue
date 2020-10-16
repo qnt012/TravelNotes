@@ -11,6 +11,7 @@
             </span>
             <div class="note-editor-bottom">
                 <button @click=createUpdate class="fas fa-edit"></button>
+                <button @click=cancelUpdate class="fas fa-times"></button>
             </div>
         </div>
     </div>
@@ -43,7 +44,15 @@ export default {
             this.inputDate = '';
             this.inputWriter = '';
         },
+        cancelUpdate() {
+            this.$emit('noteUpdated', this.notesData[this.index].title, this.notesData[this.index].text, this.notesData[this.index].theme, this.notesData[this.index].index, this.notesData[this.index].date, this.notesData[this.index].writer);
+            this.inputTitle = '';
+            this.inputText= '',
+            this.inputTheme = '';
+            this.due = true;
+            this.inputDate = '';
+            this.inputWriter = '';
+        },
     },
 }
 </script>
-
