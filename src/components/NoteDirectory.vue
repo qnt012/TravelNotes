@@ -2,8 +2,7 @@
   <div style="z-index: 2" class="note-directory">
     <div v-for="(note, index) in notesData" :key="`note-${index}`">
       <div :id="'note.title'" class="listNote">
-        
-        <a href="#note.title">{{ index + 1 }} : {{ note.title }}</a>
+        <a href="#note.title">{{ note.title }}</a>
       </div>
     </div>
   </div>
