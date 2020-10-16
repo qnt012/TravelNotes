@@ -35,6 +35,7 @@ body {
     & img {
         margin-left:25px;
         height:50px;
+        cursor: pointer;
     }
 }
 
@@ -193,6 +194,7 @@ body {
     padding: 20px;
     padding-left: 30px;
     background-color: white;
+    margin-top: 10px;
 }
 
 .bar-comp {
@@ -221,3 +223,45 @@ body {
 .categoryInput {
     width: 80px;
 }
+.fa-search {
+    width: 50px;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    text-align: center;
+    border-radius: 1.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    background: gold;
+}
+
+.fa-undo {
+    width: 50px;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 4px;
+    display: block;
+    text-align: center;
+    border-radius: 1.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    background: rgb(154, 224, 48);
+}
+
+.noteSearchMenu {
+    position: relative;
+    margin-left: auto; 
+    margin-right: auto;
+    width: 30%;
+    display: flex;
+    height: 40px;
+    font-weight: 100;
+}
+
+.noteSearchMenu input[type="search"] {
+    flex: 1;
+    margin-right: 10px;
+    border: 0;
+    border-radius: 1.5em;
+    font-size: 1rem;
+  }

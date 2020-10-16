@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <app-header @openEditor="editorOpen = !editorOpen, updaterOpen = false" ></app-header>
+    <app-note-search-menu @getKeyword="findKeyword"></app-note-search-menu>
     <app-note-editor :categoriesData=categories v-if="editorOpen"  @noteAdded="newNote" @noteDeleted="deleteNote" @categoryAdded="newCategory"></app-note-editor>        
     <app-note-updater :notesData = notes v-if="updaterOpen == true && editorOpen == false" @noteUpdated="updateNewNote" ></app-note-updater>
     <app-bar :categoriesData=categories @filteringNote="notesFiltering"></app-bar>
+    
     <div style="z-index: 1" class="noteContainer">
         <div v-for="(note, index) in notes" :key="`note-${index}`" class="note" :style="{'background-color': note.theme, 'display': note.display}">      
             <div @click="selected=index">
@@ -31,6 +33,7 @@ import OpenMore from "./components/OpenMore.vue";
 import NoteMenu from "./components/NoteMenu.vue";
 import NoteUpdater from "./components/NoteUpdater.vue";
 import Bar from "./components/Bar.vue";
+import NoteSearchMenu from './components/NoteSearchMenu.vue';
 
 export default {
   name: "App",
@@ -45,6 +48,13 @@ export default {
     };
   },
   computed: {},
+  filters: { 
+    capitalize: function (value) { 
+      if (!value) return '' 
+      value = value.toString() 
+      return value.charAt(0).toUpperCase() + value.slice(1) 
+    } 
+  },
   methods: {
     newNote(title, text, theme, date, writer, category) {
       var dis = "none";
@@ -110,7 +120,26 @@ export default {
     reColor(theme) {
       this.notes[this.selected].theme = theme;
       this.notes.moreOpen = false;
-    }
+    },
+    findKeyword(keyword) {
+      for (var i = 0; i < this.notes.length; i++) {
+        this.notes[i].display = "none";
+        if (keyword != ''){
+          if (this.notes[i].title.indexOf(keyword) != -1) {
+            this.notes[i].display = "inline-block";
+          } 
+          if (this.notes[i].text.indexOf(keyword) != -1) {
+            this.notes[i].display = "inline-block";
+          } 
+          if (this.notes[i].writer.indexOf(keyword)!= -1) {
+            this.notes[i].display = "inline-block";
+          }
+        }
+        else {
+          this.notes[i].display = "inline-block";
+        }
+      }
+    },
   },
   mounted() {
     if (localStorage.getItem("notes"))
@@ -140,7 +169,8 @@ export default {
     appOpenMore: OpenMore,
     appNoteMenu: NoteMenu,
     appNoteUpdater: NoteUpdater,
-    appBar: Bar
+    appBar: Bar,
+    appNoteSearchMenu: NoteSearchMenu
   }
 };
 </script>
