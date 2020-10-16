@@ -92,8 +92,9 @@ body {
     column-count: 4;
     column-gap: 1em;
     margin: 50px 25px;
+    width: 80%;
+    height: 100%;
 }
-
 
 .note {
     position: relative;
@@ -110,7 +111,7 @@ body {
     margin: 0 0 1em;
     width: 100%;
     background: #fff;
-    padding: 25px;
+    padding: 20px;
     word-break: break-word;
     cursor: pointer;
     grid-row-end: span 1;
@@ -195,6 +196,7 @@ body {
     padding-left: 30px;
     background-color: white;
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .bar-comp {
@@ -265,3 +267,31 @@ body {
     border-radius: 1.5em;
     font-size: 1rem;
   }
+.note-directory {
+    width: 100%;
+    height: 600px;
+    overflow: auto;
+}
+
+
+.allNote {
+    display: flex;
+}
+
+.noteList {
+    position: relative;
+    width: 20%;
+    top: -30px;
+    margin: 0px 25px 0px 0px;
+    h2 {
+        text-align: center;
+    }
+}
+
+.listNote {
+    background-color: lightyellow;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px 5px 5px 5px;
+    cursor: pointer;
+}
