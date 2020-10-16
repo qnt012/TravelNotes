@@ -85,7 +85,6 @@ export default {
         else {
           this.notes[i].display = "inline-block";
         }
-       
       }
     },
   },
