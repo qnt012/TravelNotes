@@ -21,7 +21,7 @@
           class="note"
           :style="{ 'background-color': note.theme }"
         >
-          <div @click="selected = index" :id="{ index }">
+          <div :id="index" @click="selected = index">
             <span
               class="update"
               @click="
@@ -69,7 +69,7 @@
       </div>
       <div class="noteList">
         <h2>[Note List]</h2>
-        <app-note-dir :notesData="notes"></app-note-dir>
+        <app-note-dir @noteLink="move" :notesData="notes"></app-note-dir>
       </div>
     </div>
   </div>
@@ -131,6 +131,12 @@ export default {
     reColor(theme) {
       this.notes[this.selected].theme = theme;
       this.notes.moreOpen = false;
+    },
+    move(index) {
+      window.scrollTo(
+        0,
+        document.getElementById(index).getBoundingClientRect().top
+      );
     },
   },
   mounted() {
