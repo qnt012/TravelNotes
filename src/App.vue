@@ -38,17 +38,17 @@ import OpenMore from "./components/OpenMore.vue";
 import NoteMenu from "./components/NoteMenu.vue";
 import NoteUpdater from "./components/NoteUpdater.vue";
 import Bar from "./components/Bar.vue";
-import NoteSearchMenu from './components/NoteSearchMenu.vue';
+import NoteSearchMenu from "./components/NoteSearchMenu.vue";
 import NoteDir from "./components/NoteDirectory.vue";
 
 export default {
   name: "App",
-  data: function () {
+  data: function() {
     return {
       editorOpen: false,
       updaterOpen: false,
       updaterButton: true,
-      updaterCancel:false,
+      updaterCancel: false,
       notes: [],
       selected: -1,
       filter: "",
@@ -56,17 +56,21 @@ export default {
     };
   },
   computed: {},
-  filters: { 
-    capitalize: function (value) { 
-      if (!value) return '' 
-      value = value.toString() 
-      return value.charAt(0).toUpperCase() + value.slice(1) 
-    } 
+  filters: {
+    capitalize: function(value) {
+      if (!value) return "";
+      value = value.toString();
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
   },
   methods: {
     newNote(title, text, theme, date, writer, category) {
       var dis = "none";
-      if (this.filter == category) {
+      if (
+        this.filter == category ||
+        this.filter == "--none--" ||
+        this.filter == ""
+      ) {
         dis = "inline-block";
       }
       this.notes.push({
@@ -98,7 +102,11 @@ export default {
     notesFiltering(category) {
       this.filter = category;
       for (var i = 0; i < this.notes.length; i++) {
-        if (this.notes[i].category == category || category == "--none--") {
+        if (
+          this.notes[i].category == category ||
+          category == "--none--" ||
+          this.filter == ""
+        ) {
           this.notes[i].display = "inline-block";
         } else {
           this.notes[i].display = "none";
@@ -116,11 +124,17 @@ export default {
       };
     },
     updateNewNote(title, text, theme, index, date, writer) {
-      this.notes[index] = {title: title, text: text, theme: theme, date:date, writer:writer}
+      this.notes[index] = {
+        title: title,
+        text: text,
+        theme: theme,
+        date: date,
+        writer: writer
+      };
       var newNotes = this.notes;
       localStorage.setItem("notes", JSON.stringify(newNotes));
-      this.updaterOpen = false
-      this.updaterButton = true
+      this.updaterOpen = false;
+      this.updaterButton = true;
     },
     reColor(theme) {
       this.notes[this.selected].theme = theme;
@@ -129,18 +143,17 @@ export default {
     findKeyword(keyword) {
       for (var i = 0; i < this.notes.length; i++) {
         this.notes[i].display = "none";
-        if (keyword != ''){
+        if (keyword != "") {
           if (this.notes[i].title.indexOf(keyword) != -1) {
             this.notes[i].display = "inline-block";
-          } 
+          }
           if (this.notes[i].text.indexOf(keyword) != -1) {
             this.notes[i].display = "inline-block";
-          } 
-          if (this.notes[i].writer.indexOf(keyword)!= -1) {
+          }
+          if (this.notes[i].writer.indexOf(keyword) != -1) {
             this.notes[i].display = "inline-block";
           }
-        }
-        else {
+        } else {
           this.notes[i].display = "inline-block";
         }
       }
@@ -150,7 +163,7 @@ export default {
         0,
         document.getElementById(index).getBoundingClientRect().top
       );
-    },
+    }
   },
   mounted() {
     if (localStorage.getItem("notes"))
@@ -182,8 +195,8 @@ export default {
     appNoteUpdater: NoteUpdater,
     appBar: Bar,
     appNoteSearchMenu: NoteSearchMenu,
-    appNoteDir: NoteDir,
-  },
+    appNoteDir: NoteDir
+  }
 };
 </script>
 
