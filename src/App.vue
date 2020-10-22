@@ -13,8 +13,8 @@
                   <span class="delete" @click.prevent="deleteNote(index), updaterOpen = true, editorOpen = false"><i class="fas fa-times"></i></span> 
                   <app-open-more @openMore="note.moreOpen = !note.moreOpen"></app-open-more>
                   <app-note-menu :notesData="notes" v-if="note.moreOpen" @recolorMenu="reColor"></app-note-menu>
-                  <span >{{ note.title }}</span>
-                  <p class="note-text">{{ note.text }}</p>
+                  <span>{{ note.title }}</span>
+                  <p v-html="note.html" class="note-text"></p>
                   <div class="note-bottom">
                     <span class="date-text" v-if="note.date">due date: {{note.date}}</span>
                     <div class="writer-text" v-if="note.writer"><i class="fas fa-user"></i> {{note.writer}}
@@ -64,7 +64,7 @@ export default {
     }
   },
   methods: {
-    newNote(title, text, theme, date, writer, category) {
+    newNote(title, text, theme, date, writer, category, html) {
       var dis = "none";
       if (
         this.filter == category ||
@@ -81,7 +81,8 @@ export default {
         writer: writer,
         category: category,
         display: dis,
-        moreOpen: false
+        moreOpen: false,
+        html: html
       });
     },
     deleteNote(index) {
