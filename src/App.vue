@@ -20,10 +20,7 @@
       v-if="updaterOpen == true && editorOpen == false"
       @noteUpdated="updateNewNote"
     ></app-note-updater>
-    <app-bar
-      :categoriesData="categories"
-      @filteringNote="notesFiltering"
-    ></app-bar>
+    <app-bar :categoriesData="categories" @filteringNote="notesFiltering"></app-bar>
     <div class="allNote">
       <div style="z-index: 1" class="noteContainer">
         <div
@@ -49,33 +46,28 @@
                   (updaterOpen = !updaterOpen),
                   (updaterButton = !updaterButton)
               "
-              ><i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i
-            ></span>
+            >
+              <i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i>
+            </span>
             <span
               class="delete"
               @click.prevent="
                 deleteNote(index), (updaterOpen = true), (editorOpen = false)
               "
-              ><i class="fas fa-times"></i
-            ></span>
-            <app-open-more
-              @openMore="note.moreOpen = !note.moreOpen"
-            ></app-open-more>
-            <app-note-menu
-              :notesData="notes"
-              v-if="note.moreOpen"
-              @recolorMenu="reColor"
-            ></app-note-menu>
+            >
+              <i class="fas fa-times"></i>
+            </span>
+            <app-open-more @openMore="note.moreOpen = !note.moreOpen"></app-open-more>
+            <app-note-menu :notesData="notes" v-if="note.moreOpen" @recolorMenu="reColor"></app-note-menu>
             <span>
               <p class="note-title">{{ note.title }}</p>
               <p class="note-text">{{ note.text }}</p>
             </span>
             <div class="note-bottom">
-              <span class="date-text" v-if="note.date"
-                >due date: {{ note.date }}</span
-              >
+              <span class="date-text" v-if="note.date">due date: {{ note.date }}</span>
               <div class="writer-text" v-if="note.writer">
-                <i class="fas fa-user"></i> {{ note.writer }}
+                <i class="fas fa-user"></i>
+                {{ note.writer }}
               </div>
             </div>
           </div>
@@ -199,6 +191,7 @@ export default {
       localStorage.setItem("notes", JSON.stringify(newNotes));
       this.updaterOpen = false;
       this.updaterButton = true;
+      window.location.reload();
     },
     reColor(theme) {
       this.notes[this.selected].theme = theme;
