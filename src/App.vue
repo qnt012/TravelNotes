@@ -7,11 +7,11 @@
     <app-bar :categoriesData=categories @filteringNote="notesFiltering"></app-bar>
     <div class="allNote">
       <div style="z-index: 1" class="noteContainer">
-          <div v-for="(note, index) in notes" :key="`note-${index}`" :id="index" @mouseover="selected=index" class="note" 
+          <div v-for="(note, index) in notes" :key="`note-${index}`" :id="index" @click="selected=index" class="note" 
             draggable="true" @dragstart="onDrag" @dragover.prevent="onDragOver" @dragleave.prevent="onDragLeave" @drop="onDrop" 
             :style="{'background-color': note.theme, 'display': note.display}">      
               <span class="update" @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer), editorOpen=false, updaterOpen = !updaterOpen, updaterButton =  !updaterButton"><i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i></span>
-              <span class="delete" @click.prevent="deleteNote(index), updaterOpen = true, editorOpen = false"><i class="fas fa-times"></i></span> 
+              <span class="delete" @click.prevent="deleteNote(index), updaterOpen = false, editorOpen = false"><i class="fas fa-times"></i></span> 
               <app-open-more @openMore="note.moreOpen = !note.moreOpen"></app-open-more>
               <app-note-menu :notesData="notes" v-if="note.moreOpen" @recolorMenu="reColor"></app-note-menu>
               <span>{{ note.title }}</span>
