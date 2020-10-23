@@ -70,11 +70,14 @@ body {
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
     border-radius: 3px;
     .tArea {
+        border-radius: 3px;
+        overflow: auto;
         font-size: 13px;
         height: 180px;
         padding: 10px;
         resize: none;
-        border: none;
+        margin-top:4px;
+        border: 1px solid rgba(0,0,0,.15);
         &:hover {
             outline: 0;
         }
@@ -295,5 +298,15 @@ body {
     padding: 5px;
     margin: 5px;
     border-radius: 5px 5px 5px 5px;
+    cursor: pointer;
+}
+
+.effectButton{
+    border-radius: 5px 5px 5px 5px;
+    font-size: 12px;
+    background-color: light;
+    margin-left: 3px;
+    padding: 1px 5px;
+    border: 1px solid black;
     cursor: pointer;
 }

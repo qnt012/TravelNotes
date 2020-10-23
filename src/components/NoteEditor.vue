@@ -3,10 +3,10 @@
     <div class="note-editor">
       <input class="title-input" type="text" v-model="title" placeholder="Title"/>
       <span>
-      <input type="button" value="B" onclick="document.execCommand('bold')" />
-      <input type="button" value="I" onclick="document.execCommand('italic')" />
-      <input type="button" value="_" onclick="document.execCommand('underline')" />
-      <input type="button" value="-" onclick="document.execCommand('strikeThrough')" />
+      <input class="effectButton" type="button" value="B" onclick="document.execCommand('bold')" />
+      <input class="effectButton" type="button" value="/" onclick="document.execCommand('italic')" />
+      <input class="effectButton" type="button" value="_" onclick="document.execCommand('underline')" />
+      <input class="effectButton" type="button" value="-" onclick="document.execCommand('strikeThrough')" />
       </span>
       <div class="tArea" contentEditable="true"></div>
       <span class="input-else">
