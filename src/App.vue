@@ -9,7 +9,7 @@
       <div style="z-index: 1" class="noteContainer">
           <div v-for="(note, index) in notes" :key="`note-${index}`" class="note" :style="{'background-color': note.theme, 'display': note.display}">      
               <div :id="index" @click="selected=index">
-                  <span class="update" @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer), editorOpen=false, updaterOpen = !updaterOpen, updaterButton =  !updaterButton"><i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i></span>
+                  <span class="update" @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer,note.html), editorOpen=false, updaterOpen = !updaterOpen, updaterButton =  !updaterButton"><i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i></span>
                   <span class="delete" @click.prevent="deleteNote(index), updaterOpen = true, editorOpen = false"><i class="fas fa-times"></i></span> 
                   <app-open-more @openMore="note.moreOpen = !note.moreOpen"></app-open-more>
                   <app-note-menu :notesData="notes" v-if="note.moreOpen" @recolorMenu="reColor"></app-note-menu>
@@ -114,23 +114,25 @@ export default {
         }
       }
     },
-    updateNote(title, text, theme, index, date, writer) {
+    updateNote(title, text, theme, index, date, writer, html) {
       this.notes[this.index] = {
         title: title,
         text: text,
         theme: theme,
         index: index,
         date: date,
-        writer: writer
+        writer: writer,
+        html: html
       };
     },
-    updateNewNote(title, text, theme, index, date, writer) {
+    updateNewNote(title, text, theme, index, date, writer, html) {
       this.notes[index] = {
         title: title,
         text: text,
         theme: theme,
         date: date,
-        writer: writer
+        writer: writer,
+        html: html
       };
       var newNotes = this.notes;
       localStorage.setItem("notes", JSON.stringify(newNotes));
