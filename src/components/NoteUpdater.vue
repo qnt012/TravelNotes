@@ -28,7 +28,8 @@ export default {
             inputIndex: this.notesData[this.index].index,
             due: true,
             inputDate: this.notesData[this.index].date,
-            inputWriter: this.notesData[this.index].writer
+            inputWriter: this.notesData[this.index].writer,
+            inputCategory: this.notesData[this.index].category
         }
     },   
     methods: {    
@@ -36,22 +37,24 @@ export default {
             if (this.due == false) {
                 this.inputDate = '';
             }
-            this.$emit('noteUpdated', this.inputTitle, this.inputText, this.inputTheme, this.inputIndex, this.inputDate, this.inputWriter);
+            this.$emit('noteUpdated', this.inputTitle, this.inputText, this.inputTheme, this.inputIndex, this.inputDate, this.inputWriter, this.inputCategory);
             this.inputTitle = '';
             this.inputText= '',
             this.inputTheme = '';
             this.due = true;
             this.inputDate = '';
             this.inputWriter = '';
+            this.inputCategory='';
         },
         cancelUpdate() {
-            this.$emit('noteUpdated', this.notesData[this.index].title, this.notesData[this.index].text, this.notesData[this.index].theme, this.notesData[this.index].index, this.notesData[this.index].date, this.notesData[this.index].writer);
+            this.$emit('noteUpdated', this.notesData[this.index].title, this.notesData[this.index].text, this.notesData[this.index].theme, this.notesData[this.index].index, this.notesData[this.index].date, this.notesData[this.index].writer, this.notesData[this.index].category);
             this.inputTitle = '';
             this.inputText= '',
             this.inputTheme = '';
             this.due = true;
             this.inputDate = '';
             this.inputWriter = '';
+            this.inputCategory='';
         },
     },
 }

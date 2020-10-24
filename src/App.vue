@@ -32,7 +32,7 @@
         >
           <span
             class="update"
-            @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer), editorOpen=false, updaterOpen = !updaterOpen, updaterButton =  !updaterButton"
+            @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer,note.category), editorOpen=false, updaterOpen = !updaterOpen, updaterButton =  !updaterButton"
           >
             <i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i>
           </span>
@@ -44,8 +44,10 @@
           </span>
           <app-open-more @openMore="note.moreOpen = !note.moreOpen"></app-open-more>
           <app-note-menu :notesData="notes" v-if="note.moreOpen" @recolorMenu="reColor"></app-note-menu>
-          <span>{{ note.title }}</span>
-          <p class="note-text">{{ note.text }}</p>
+          <span>
+            <p class="note-title">{{ note.title }}</p>
+            <p class="note-text">{{ note.text }}</p>
+          </span>
           <div class="note-bottom">
             <span class="date-text" v-if="note.date">due date: {{note.date}}</span>
             <div class="writer-text" v-if="note.writer">
@@ -145,7 +147,7 @@ export default {
         }
       }
     },
-    updateNote(title, text, theme, index, date, writer) {
+    updateNote(title, text, theme, index, date, writer, category) {
       this.notes[this.index] = {
         title: title,
         text: text,
@@ -153,20 +155,27 @@ export default {
         index: index,
         date: date,
         writer: writer,
+        category: category,
+        display: this.notes[index].display,
+        moreOpen: false,
       };
     },
-    updateNewNote(title, text, theme, index, date, writer) {
+    updateNewNote(title, text, theme, index, date, writer, category) {
       this.notes[index] = {
         title: title,
         text: text,
         theme: theme,
         date: date,
         writer: writer,
+        category: category,
+        display: this.notes[index].display,
+        moreOpen: false,
       };
       var newNotes = this.notes;
       localStorage.setItem("notes", JSON.stringify(newNotes));
       this.updaterOpen = false;
       this.updaterButton = true;
+      window.location.reload();
     },
     reColor(theme) {
       this.notes[this.selected].theme = theme;
