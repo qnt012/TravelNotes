@@ -52,7 +52,7 @@
             <span
               class="delete"
               @click.prevent="
-                deleteNote(index), (updaterOpen = true), (editorOpen = false)
+                deleteNote(index), (updaterOpen = false), (editorOpen = false)
               "
             >
               <i class="fas fa-times"></i>
