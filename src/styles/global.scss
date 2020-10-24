@@ -40,7 +40,7 @@ body {
 }
 
 .title-input, .writer-input {
-    padding: 10px;
+    padding: 10px 10px 10px 0px;
     border: none;
     outline: none;
 }
@@ -165,10 +165,6 @@ body {
     padding-right: 5px;
 }
 
-.selects {
-    padding-left: 10px;
-}
-
 .more {
     position: absolute;
     right: 45px;
@@ -194,8 +190,6 @@ body {
 }
 
 .bar {
-    position: sticky;
-    top: 0px;
     z-index: 5;
     padding: 20px;
     padding-left: 30px;
@@ -302,11 +296,27 @@ body {
 }
 
 .effectButton{
+    width: 22px;
     border-radius: 5px 5px 5px 5px;
-    font-size: 12px;
-    background-color: light;
-    margin-left: 3px;
-    padding: 1px 5px;
-    border: 1px solid black;
+    font-size: 10px;
+    //background-color: lightcyan;
+    margin-right: 5px;
+    margin-bottom: 2px;
+    padding: 3px 5px;
+    //border: 1px solid black;
     cursor: pointer;
+}
+
+.note-title {
+    font-weight: bold;
+    position: relative;
+    margin-top: 30px;
+}
+
+.input-color {
+    z-index: 2;
+}
+
+.input-search {
+    padding-left: 10px;
 }

@@ -35,6 +35,7 @@ export default {
       due: true,
       inputDate: this.notesData[this.index].date,
       inputWriter: this.notesData[this.index].writer,
+      inputCategory: this.notesData[this.index].category,
       inputHtml: this.notesData[this.index].html
     };
   },
@@ -53,6 +54,7 @@ export default {
         this.inputIndex,
         this.inputDate,
         this.inputWriter,
+        this.inputCategory,
         this.inputHtml
       );
       this.inputTitle = "";
@@ -60,6 +62,7 @@ export default {
       this.due = true;
       this.inputDate = "";
       this.inputWriter = "";
+      this.inputCategory="";
       this.inputHtml = "";
       document.getElementsByClassName("tArea")[0].innerHTML = "";
     },
@@ -72,6 +75,7 @@ export default {
         this.notesData[this.index].index,
         this.notesData[this.index].date,
         this.notesData[this.index].writer,
+        this.notesData[this.index].category,
         this.notesData[this.index].html
       );
       this.inputTitle = "";
@@ -79,6 +83,7 @@ export default {
       this.due = true;
       this.inputDate = "";
       this.inputWriter = "";
+      this.inputCategory="";
       this.inputHtml = "";
       document.getElementsByClassName("tArea")[0].innerHTML = "";
     }
