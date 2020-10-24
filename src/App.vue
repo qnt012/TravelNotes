@@ -1,12 +1,6 @@
 <template>
   <div id="app">
-    <app-header
-      @openEditor="
-        (editorOpen = !editorOpen),
-          (updaterButton = true),
-          (updaterOpen = false)
-      "
-    ></app-header>
+    <app-header @openEditor="editorOpen = !editorOpen, updaterButton = true, updaterOpen = false"></app-header>
     <app-note-search-menu @getKeyword="findKeyword"></app-note-search-menu>
     <app-note-editor
       :categoriesData="categories"
@@ -26,49 +20,39 @@
         <div
           v-for="(note, index) in notes"
           :key="`note-${index}`"
+          :id="index"
+          @click="selected=index"
           class="note"
-          :style="{ 'background-color': note.theme, display: note.display }"
+          draggable="true"
+          @dragstart="onDrag"
+          @dragover.prevent="onDragOver"
+          @dragleave.prevent="onDragLeave"
+          @drop="onDrop"
+          :style="{'background-color': note.theme, 'display': note.display}"
         >
-          <div :id="index" @click="selected = index">
-            <span
-              class="update"
-              @click="
-                updateNote(
-                  note.title,
-                  note.text,
-                  note.theme,
-                  index,
-                  note.date,
-                  note.writer,
-                  note.category
-                ),
-                  (editorOpen = false),
-                  (updaterOpen = !updaterOpen),
-                  (updaterButton = !updaterButton)
-              "
-            >
-              <i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i>
-            </span>
-            <span
-              class="delete"
-              @click.prevent="
-                deleteNote(index), (updaterOpen = false), (editorOpen = false)
-              "
-            >
-              <i class="fas fa-times"></i>
-            </span>
-            <app-open-more @openMore="note.moreOpen = !note.moreOpen"></app-open-more>
-            <app-note-menu :notesData="notes" v-if="note.moreOpen" @recolorMenu="reColor"></app-note-menu>
-            <span>
-              <p class="note-title">{{ note.title }}</p>
-              <p class="note-text">{{ note.text }}</p>
-            </span>
-            <div class="note-bottom">
-              <span class="date-text" v-if="note.date">due date: {{ note.date }}</span>
-              <div class="writer-text" v-if="note.writer">
-                <i class="fas fa-user"></i>
-                {{ note.writer }}
-              </div>
+          <span
+            class="update"
+            @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer,note.category), editorOpen=false, updaterOpen = !updaterOpen, updaterButton =  !updaterButton"
+          >
+            <i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i>
+          </span>
+          <span
+            class="delete"
+            @click.prevent="deleteNote(index), updaterOpen = false, editorOpen = false"
+          >
+            <i class="fas fa-times"></i>
+          </span>
+          <app-open-more @openMore="note.moreOpen = !note.moreOpen"></app-open-more>
+          <app-note-menu :notesData="notes" v-if="note.moreOpen" @recolorMenu="reColor"></app-note-menu>
+          <span>
+            <p class="note-title">{{ note.title }}</p>
+            <p class="note-text">{{ note.text }}</p>
+          </span>
+          <div class="note-bottom">
+            <span class="date-text" v-if="note.date">due date: {{note.date}}</span>
+            <div class="writer-text" v-if="note.writer">
+              <i class="fas fa-user"></i>
+              {{note.writer}}
             </div>
           </div>
         </div>
@@ -220,6 +204,32 @@ export default {
         0,
         document.getElementById(index).getBoundingClientRect().top
       );
+    },
+    onDrag() {
+      event.dataTransfer.setData("select", event.target.id);
+    },
+    onDragOver() {
+      if (this.notes[event.target.id] != null) {
+        event.target.style.border = "3px solid rgb(154, 224, 48)";
+      }
+    },
+    onDragLeave() {
+      if (this.notes[event.target.id] != null) {
+        event.target.style.border = "none";
+      }
+    },
+    onDrop() {
+      if (this.notes[event.target.id] != null) {
+        var data = event.dataTransfer.getData("select");
+        var temp = this.notes[data];
+        this.notes.splice(data, 1, this.notes[event.target.id]);
+        this.notes.splice(event.target.id, 1, temp);
+        event.target.style.border = "none";
+        this.notes[data].moreOpen = false;
+        this.notes[event.target.id].moreOpen = false;
+        this.updaterOpen = false;
+        this.updaterButton = true;
+      }
     },
   },
   mounted() {
