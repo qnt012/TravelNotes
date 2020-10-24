@@ -32,7 +32,7 @@
         >
           <span
             class="update"
-            @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer,note.category), editorOpen=false, updaterOpen = !updaterOpen, updaterButton =  !updaterButton"
+            @click="updateNote(note.title, note.text, note.theme, index, note.date, note.writer,note.category,note.html), editorOpen=false, updaterOpen = !updaterOpen, updaterButton =  !updaterButton"
           >
             <i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i>
           </span>
@@ -46,7 +46,7 @@
           <app-note-menu :notesData="notes" v-if="note.moreOpen" @recolorMenu="reColor"></app-note-menu>
           <span>
             <p class="note-title">{{ note.title }}</p>
-            <p class="note-text">{{ note.text }}</p>
+            <p v-html="note.html" class="note-text">{{ note.text }}</p>
           </span>
           <div class="note-bottom">
             <span class="date-text" v-if="note.date">due date: {{note.date}}</span>
@@ -98,7 +98,7 @@ export default {
     },
   },
   methods: {
-    newNote(title, text, theme, date, writer, category) {
+    newNote(title, text, theme, date, writer, category, html) {
       var dis = "none";
       if (
         this.filter == category ||
@@ -114,6 +114,7 @@ export default {
         date: date,
         writer: writer,
         category: category,
+        html: html,
         display: dis,
         moreOpen: false,
       });
@@ -147,7 +148,7 @@ export default {
         }
       }
     },
-    updateNote(title, text, theme, index, date, writer, category) {
+    updateNote(title, text, theme, index, date, writer, category, html) {
       this.notes[this.index] = {
         title: title,
         text: text,
@@ -156,11 +157,12 @@ export default {
         date: date,
         writer: writer,
         category: category,
+        html: html,
         display: this.notes[index].display,
         moreOpen: false,
       };
     },
-    updateNewNote(title, text, theme, index, date, writer, category) {
+    updateNewNote(title, text, theme, index, date, writer, category, html) {
       this.notes[index] = {
         title: title,
         text: text,
@@ -168,6 +170,7 @@ export default {
         date: date,
         writer: writer,
         category: category,
+        html: html,
         display: this.notes[index].display,
         moreOpen: false,
       };

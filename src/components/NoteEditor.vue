@@ -2,7 +2,13 @@
   <div class="note-grid">
     <div class="note-editor">
       <input class="title-input" type="text" v-model="title" placeholder="Title"/>
-      <textarea rows="10" v-model="text" placeholder="Take a note..."></textarea>
+      <span>
+      <input class="effectButton" type="button" value="B" onclick="document.execCommand('bold')" />
+      <input class="effectButton" type="button" value="/" onclick="document.execCommand('italic')" />
+      <input class="effectButton" type="button" value="_" onclick="document.execCommand('underline')" />
+      <input class="effectButton" type="button" value="-" onclick="document.execCommand('strikeThrough')" />
+      </span>
+      <div class="tArea" contentEditable="true"></div>
       <span class="input-else">
         <input class="writer-input" type="text" placeholder="writer" v-model="writer"/>
         <input type="checkbox" id="due" class="duedate" v-model="due" />
@@ -40,11 +46,14 @@ export default {
       writer: "",
       category: "",
       openCategory: false,
-      addCategory: ""
+      addCategory: "",
+      html: ""
     };
   },
   methods: {
     createNew() {
+      this.text = document.getElementsByClassName("tArea")[0].textContent;
+      this.html = document.getElementsByClassName("tArea")[0].innerHTML;
       this.$emit(
         "noteAdded",
         this.title,
@@ -52,7 +61,8 @@ export default {
         this.theme,
         this.date,
         this.writer,
-        this.category
+        this.category,
+        this.html
       );
       this.title = "";
       (this.text = ""), (this.theme = "#ffffff");
@@ -60,6 +70,8 @@ export default {
       this.date = "";
       this.writer = "";
       this.category = "";
+      this.html = "";
+      document.getElementsByClassName("tArea")[0].innerHTML = "";
     },
     deleteNote(index) {
       this.$emit("noteDeleted", index);
