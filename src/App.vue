@@ -115,7 +115,6 @@ export default {
       updaterButton: true,
       updaterCancel: false,
       selected: -1,
-
     };
   },
   computed: {
@@ -140,7 +139,6 @@ export default {
     deleteNote(index) {
       this.$store.commit("deleteNote", index);
     },
-    
     updateNote(title, text, theme, index, date, writer, category, html) {
       this.notes[this.index] = {
         title: title,
@@ -176,24 +174,6 @@ export default {
     reColor(theme) {
       this.notes[this.selected].theme = theme;
       this.notes.moreOpen = false;
-    },
-    findKeyword(keyword) {
-      for (var i = 0; i < this.notes.length; i++) {
-        this.notes[i].display = "none";
-        if (keyword != "") {
-          if (this.notes[i].title.indexOf(keyword) != -1) {
-            this.notes[i].display = "inline-block";
-          }
-          if (this.notes[i].text.indexOf(keyword) != -1) {
-            this.notes[i].display = "inline-block";
-          }
-          if (this.notes[i].writer.indexOf(keyword) != -1) {
-            this.notes[i].display = "inline-block";
-          }
-        } else {
-          this.notes[i].display = "inline-block";
-        }
-      }
     },
     move(index) {
       window.scrollTo(
