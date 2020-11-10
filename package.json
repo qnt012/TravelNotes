@@ -17,6 +17,7 @@
     "server": "^1.0.30",
     "uuid": "^8.0.0",
     "vue": "^2.6.11",
+    "vue-naver-maps": "^0.14.1",
     "vue-router": "^3.4.9"
   },
   "devDependencies": {

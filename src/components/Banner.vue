@@ -13,6 +13,7 @@
 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 <script language="javaScript">
 import $ from "jquery";
+import router from "../router.js";
 $(document).ready(function() {
   var $banner = $(".banner").find("ul");
 
@@ -52,5 +53,13 @@ $(document).ready(function() {
   }
   console.log(rollingId);
 });
-export default {};
+export default {
+  router,
+  methods: {
+    moveTo(page) {
+      var router = this.$router;
+      router.push(page);
+    }
+  }
+};
 </script>

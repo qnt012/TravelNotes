@@ -1,11 +1,11 @@
 <template>
   <div class="homeHeader">     
-    <img src="../assets/logo.png">
+    <img src="../assets/logo.png" @click="moveTo('/')">
     <ul>
-        <li @click="moveTo('/note')">내 노트</li>
-        <li>둘러보기</li>
-        <li>로드맵</li>
-        <li>캘린더</li>
+        <li @click="moveTo('/note')">My Notes</li>
+        <li @click="moveTo('/browse')">Browse</li>
+        <li>RoadMap</li>
+        <li>Callender</li>
     </ul>
   </div>
 </template>

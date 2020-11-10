@@ -2,21 +2,15 @@
   <div class="home">
     <home-header></home-header>
     <app-banner></app-banner>
+    <div>예시 노트들 출력 예정</div>
   </div>
 </template>
 
 <script>
 import HomeHeader from "../components/HomeHeader.vue";
 import Banner from "../components/Banner.vue";
-import router from "../router.js";
 export default {
-  router,
-  methods: {
-    moveTo(page) {
-      var router = this.$router;
-      router.push(page);
-    }
-  },
+  methods: {},
   components: {
     homeHeader: HomeHeader,
     appBanner: Banner

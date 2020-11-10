@@ -1,7 +1,7 @@
 <template>
   <div class="header">     
     <img src="../assets/logo.png" @click="moveTo('/')">
-    <p>내 노트</p>
+    <p>My Notes</p>
     <button class="add-btn" @click.prevent="openEditor"><i class="fas fa-plus"></i></button> 
   </div>
 </template>
