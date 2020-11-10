@@ -24,14 +24,14 @@ $(document).ready(function() {
   //정해진 초마다 함수 실행
   rollingId = setInterval(function() {
     rollingStart();
-  }, 3000); //다음 이미지로 롤링 애니메이션 할 시간차
+  }, 4000); //다음 이미지로 롤링 애니메이션 할 시간차
 
   function rollingStart() {
     $banner.css("width", $bannerWidth * $length + "px");
     $banner.css("height", $bannerHeight + "px");
-    //alert(bannerHeight);
+
     //배너의 좌측 위치를 옮겨 준다.
-    $banner.animate({ left: -$bannerWidth + "px" }, 2000, function() {
+    $banner.animate({ left: -$bannerWidth + "px" }, 1500, function() {
       //숫자는 롤링 진행되는 시간이다.
       //첫번째 이미지를 마지막 끝에 복사(이동이 아니라 복사)해서 추가한다.
       $(this).append(

@@ -22,18 +22,20 @@ body {
 
 
 .header {
+    font-family: 'NanumBarunGothic', 'serif';
     display: flex;
     align-items: center;
     // justify-content: center;
-    background: #000;
-    color: #fff;
+    background: #fff;
+    color: black;
     margin-bottom: 50px;
     & p {
-        font-size:25px;
+        font-size:20px;
         margin:25px;
     }
     & img {
         margin-left:25px;
+        margin-right:25px;
         height:50px;
         cursor: pointer;
     }
@@ -193,7 +195,6 @@ body {
     z-index: 5;
     padding: 20px;
     padding-left: 30px;
-    background-color: white;
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -346,4 +347,36 @@ body {
 .banner ul li img {
     width: 1000px; 
     height: 600px; 
+}
+
+.homeHeader {
+    display: flex;
+    align-items: center;
+    // justify-content: center;
+    background: #fff;
+    color: black;
+    li {
+        display: inline-block;
+        font-size:20px;
+        font-family: 'NanumBarunGothic', 'serif';
+        text-align: center;
+        padding: 5px;
+        margin-right: 50px;
+        color: gray;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    li:hover {
+        //transform: scale(1.1);
+        color: black;
+        box-shadow: 0 -2px 0 0px #000 inset; 
+        //background-color: black;
+        //color: white;
+    }
+    & img {
+        margin-left:25px;
+        margin-right:25px;
+        height:50px;
+        cursor: pointer;
+    }
 }

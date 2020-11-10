@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class="home">
+    <home-header></home-header>
     <app-banner></app-banner>
-    <button @click="moveTo('/note')">Note.vue로</button>
   </div>
 </template>
 
 <script>
+import HomeHeader from "../components/HomeHeader.vue";
 import Banner from "../components/Banner.vue";
 import router from "../router.js";
 export default {
@@ -17,6 +18,7 @@ export default {
     }
   },
   components: {
+    homeHeader: HomeHeader,
     appBanner: Banner
   }
 };
