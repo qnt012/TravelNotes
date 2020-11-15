@@ -5,33 +5,28 @@
         class="title-input"
         type="text"
         v-model="title"
-        placeholder="Title"
-      />
+        placeholder="Title"/>
       <span>
         <input
           class="effectButton"
           type="button"
           value="B"
-          onclick="document.execCommand('bold')"
-        />
+          onclick="document.execCommand('bold')"/>
         <input
           class="effectButton"
           type="button"
           value="/"
-          onclick="document.execCommand('italic')"
-        />
+          onclick="document.execCommand('italic')"/>
         <input
           class="effectButton"
           type="button"
           value="_"
-          onclick="document.execCommand('underline')"
-        />
+          onclick="document.execCommand('underline')"/>
         <input
           class="effectButton"
           type="button"
           value="-"
-          onclick="document.execCommand('strikeThrough')"
-        />
+          onclick="document.execCommand('strikeThrough')"/>
       </span>
       <div class="tArea" contentEditable="true"></div>
       <span class="input-else">
@@ -39,8 +34,7 @@
           class="writer-input"
           type="text"
           placeholder="writer"
-          v-model="writer"
-        />
+          v-model="writer"/>
         <input type="checkbox" id="due" class="duedate" v-model="due" />
         <label for="due" class="due-label">due date</label>
         <input v-if="due" type="date" v-model="date" />
@@ -53,14 +47,12 @@
         <select
           v-model="category"
           id="category-input"
-          @click="UpdateCategoryOption"
-        ></select>
+          @click="UpdateCategoryOption"></select>
         <input
           v-if="openCategory"
           type="text"
           class="categoryInput"
-          v-model="addCategory"
-        />
+          v-model="addCategory"/>
         <button v-if="!openCategory" @click="openCategory = !openCategory">
           <i class="fas fa-plus"></i>
         </button>
@@ -68,6 +60,11 @@
           <i class="fas fa-check"></i>
         </button>
       </div>
+      <span class="input-image">     
+        <label for="upload-image">upload image</label>
+        <button class='upload-button' @click=startCam>Cam Up!</button>
+        <div v-if=webcam id="cam"/><h1 v-if=webcam>This object is {{ predicted }} </h1>
+      </span>
       <div class="note-editor-bottom">
         <button @click="createNew" class="fas fas-check-circle">
           <i class="fas fa-check-circle"></i>
@@ -78,6 +75,8 @@
 </template>
 
 <script>
+import * as tmImage from '@teachablemachine/image';
+
 export default {
   data: function () {
     return {
@@ -90,6 +89,10 @@ export default {
       openCategory: false,
       addCategory: "",
       html: "",
+
+      model:null,
+      webcam:null,   
+      predicted:"",
     };
   },
   computed: {
@@ -152,6 +155,29 @@ export default {
         sel.appendChild(option);
       }
     },
+    async loop() {
+        this.webcam.update(); // update the webcam frame
+        await this.predict();
+        window.requestAnimationFrame(this.loop);
+    },   
+    async predict() {
+        // predict can take in an image, video or canvas html element
+        let prediction = await this.model.predictTopK(this.webcam.canvas,1,true);        
+        this.predicted = prediction[0].className;
+    },
+    async startCam(){
+        this.webcam = new tmImage.Webcam(570,570,true);
+        await this.webcam.setup(); // request access to the webcam
+        await this.webcam.play();
+        document.getElementById("cam").appendChild(this.webcam.canvas);
+        window.requestAnimationFrame(this.loop);
+    } 
+  },
+  async mounted() {
+    let baseURL = 'https://teachablemachine.withgoogle.com/models/TGkpUrS94/';
+    this.model = await tmImage.load(baseURL+'model.json', baseURL+'metadata.json');
+    let maxPredictions = this.model.getTotalClasses();
+    console.log(maxPredictions);    
   },
 };
 </script>
