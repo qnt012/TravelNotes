@@ -1,11 +1,7 @@
 <template>
   <div id="app">
     <app-header
-      @openEditor="
-        (editorOpen = !editorOpen),
-          (updaterButton = true),
-          (updaterOpen = false)
-      "
+      @openEditor="(editorOpen = !editorOpen), reUpdaterOpen(false), reUpdaterButton(true)"
     ></app-header>
     <app-note-search-menu @getKeyword="findKeyword"></app-note-search-menu>
     <app-note-editor
@@ -16,19 +12,16 @@
     ></app-note-editor>
     <app-note-updater
       :notesData="notes"
-      v-if="updaterOpen == true && editorOpen == false"
-      @noteUpdated="updateNewNote"
+      v-if="this.updaterOpen == true && editorOpen == false"
     ></app-note-updater>
-    <app-bar
-      :categoriesData="categories"
-    ></app-bar>
+    <app-bar :categoriesData="categories"></app-bar>
     <div class="allNote">
       <div style="z-index: 1" class="noteContainer">
         <div
           v-for="(note, index) in notes"
           :key="`note-${index}`"
           :id="index"
-          @click="selected = index"
+          @click="select(index)"
           class="note"
           draggable="true"
           @dragstart="onDrag"
@@ -39,29 +32,13 @@
         >
           <span
             class="update"
-            @click="
-              updateNote(
-                note.title,
-                note.text,
-                note.theme,
-                index,
-                note.date,
-                note.writer,
-                note.category,
-                note.html
-              ),
-                (editorOpen = false),
-                (updaterOpen = !updaterOpen),
-                (updaterButton = !updaterButton)
-            "
+            @click="(editorOpen = false), reUpdaterOpen(true), reUpdaterButton(false)"
           >
             <i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i>
           </span>
           <span
             class="delete"
-            @click.prevent="
-              deleteNote(index), (updaterOpen = false), (editorOpen = false)
-            "
+            @click.prevent="deleteNote(index), reUpdaterOpen(false), editorOpen = false"
           >
             <i class="fas fa-times"></i>
           </span>
@@ -70,6 +47,7 @@
           ></app-open-more>
           <app-note-menu
             :notesData="notes"
+            v-model="note.moreOpen"
             v-if="note.moreOpen"
             @recolorMenu="reColor"
           ></app-note-menu>
@@ -111,10 +89,6 @@ export default {
   data: function () {
     return {
       editorOpen: false,
-      updaterOpen: false,
-      updaterButton: true,
-      updaterCancel: false,
-      selected: -1,
     };
   },
   computed: {
@@ -126,6 +100,15 @@ export default {
     },
     filter() {
       return this.$store.getters.getFilter;
+    },
+    selected() {
+      return this.$store.getters.getSelected;
+    },
+    updaterOpen() {
+      return this.$store.getters.getUpdaterOpen;
+    },
+    updaterButton() {
+      return this.$store.getters.getUpdaterButton;
     }
   },
   filters: {
@@ -136,44 +119,21 @@ export default {
     },
   },
   methods: {
+    select(index) {
+      this.$store.commit("setSelected", index);
+    },
     deleteNote(index) {
       this.$store.commit("deleteNote", index);
     },
-    updateNote(title, text, theme, index, date, writer, category, html) {
-      this.notes[this.index] = {
-        title: title,
-        text: text,
-        theme: theme,
-        index: index,
-        date: date,
-        writer: writer,
-        category: category,
-        html: html,
-        display: this.notes[index].display,
-        moreOpen: false,
-      };
+    reUpdaterOpen(tf) {
+      this.$store.commit("setUpdaterOpen", tf);
     },
-    updateNewNote(title, text, theme, index, date, writer, category, html) {
-      this.notes[index] = {
-        title: title,
-        text: text,
-        theme: theme,
-        date: date,
-        writer: writer,
-        category: category,
-        html: html,
-        display: this.notes[index].display,
-        moreOpen: false,
-      };
-      var newNotes = this.notes;
-      localStorage.setItem("notes", JSON.stringify(newNotes));
-      this.updaterOpen = false;
-      this.updaterButton = true;
-      window.location.reload();
+    reUpdaterButton(tf) {
+      this.$store.commit("setUpdaterButton", tf);
     },
     reColor(theme) {
       this.notes[this.selected].theme = theme;
-      this.notes.moreOpen = false;
+      this.notes[this.selected].moreOpen = false;
     },
     move(index) {
       window.scrollTo(
@@ -203,14 +163,16 @@ export default {
         event.target.style.border = "none";
         this.notes[data].moreOpen = false;
         this.notes[event.target.id].moreOpen = false;
-        this.updaterOpen = false;
-        this.updaterButton = true;
+        this.$store.commit("setUpdaterOpen", false);
+        this.$store.commit("setUpdaterButton", true);
+        this.$store.commit("reMatchIdx");
       }
     },
   },
   mounted() {
     if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
-    if (localStorage.getItem("categories")) this.$store.commit("restoreCategory");
+    if (localStorage.getItem("categories"))
+      this.$store.commit("restoreCategory");
     if (localStorage.getItem("filter")) this.$store.commit("restoreFilter");
   },
   watch: {
