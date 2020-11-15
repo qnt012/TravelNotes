@@ -19,13 +19,36 @@ export default {
       keyword: "",
     };
   },
+  computed: {
+    notes() {
+      return this.$store.getters.getNotes;
+    },
+  },
   methods: {
     searchKeyword() {
-      this.$emit("getKeyword", this.keyword);
+      for (var i = 0; i < this.notes.length; i++) {
+        this.notes[i].display = "none";
+        if (this.keyword != "") {
+          if (this.notes[i].title.indexOf(this.keyword) != -1) {
+            this.notes[i].display = "inline-block";
+          }
+          if (this.notes[i].text.indexOf(this.keyword) != -1) {
+            this.notes[i].display = "inline-block";
+          }
+          if (this.notes[i].writer.indexOf(this.keyword) != -1) {
+            this.notes[i].display = "inline-block";
+          }
+        } else {
+          this.notes[i].display = "inline-block";
+          this.keyword = "";
+        }
+      }
     },
     deleteKeyword() {
-      this.$emit("getKeyword", "");
       this.keyword = "";
+      for (var i = 0; i < this.notes.length; i++) {
+        this.notes[i].display = "inline-block";
+      }
     },
   },
 };
