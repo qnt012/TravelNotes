@@ -59,10 +59,12 @@
           <input id="files" type="file" name="file" ref="uploadInput" :multiple="false" @change="detectFiles($event)" />
         </form>
         
-      <img v-if="uploadEnd" :src="downloadURL" width="100%" />
+      <img id="im" v-if="uploadEnd" :src="downloadURL" width="100%"/>
       <div v-if="uploadEnd">
         <button class="ma-0" dark small color="error" @click="deleteImage()">Delete</button>
+        <button @click="testfunc">예측</button>
       </div>
+      <h1 v-if="downloadURL">This object is {{ predicted }}</h1>
       </span>
       <div class="note-editor-bottom">
         <button @click="createNew" class="fas fas-check-circle">
@@ -70,15 +72,16 @@
         </button>
       </div>
     </div>
+    <div id="output"></div>
   </div>
 </template>
 
 <script>
 import * as tmImage from "@teachablemachine/image";
-import firebase from 'firebase'
+import firebase from "firebase";
 
 export default {
-  data: function () {
+  data: function() {
     return {
       title: "",
       theme: "#ffffff",
@@ -93,6 +96,7 @@ export default {
       model: null,
       webcam: null,
       predicted: "",
+      
 
       progressUpload: 0,
       fileName: "",
@@ -101,7 +105,7 @@ export default {
       uploadEnd: false,
       downloadURL: "",
 
-      preview: "",
+      preview: ""
     };
   },
   computed: {
@@ -111,6 +115,9 @@ export default {
     filter() {
       return this.$store.getters.getFilter;
     },
+    path() {
+      return this.$store.getters.getPath;
+    }
   },
   methods: {
     createNew() {
@@ -133,7 +140,7 @@ export default {
         writer: this.writer,
         category: this.category,
         display: dis,
-        html: this.html,
+        html: this.html
       });
       this.title = "";
       (this.text = ""), (this.theme = "#ffffff");
@@ -183,6 +190,13 @@ export default {
       );
       this.predicted = prediction[0].className;
     },
+    async predictImage(img) {
+      // predict can take in an image, video or canvas html element
+      const predictionI = await this.model.predictTopK(img, 1, true);
+      console.log(predictionI[0]);
+      this.predicted = predictionI[0].className;
+    },
+
     async startCam() {
       this.webcam = new tmImage.Webcam(570, 570, true);
       await this.webcam.setup(); // request access to the webcam
@@ -193,30 +207,48 @@ export default {
     selectFile() {
       this.$refs.uploadInput.click();
     },
-    detectFiles (e) {
-      let fileList = e.target.files || e.dataTransfer.files
+
+    detectFiles(e) {
+      let fileList = e.target.files || e.dataTransfer.files;
       Array.from(Array(fileList.length).keys()).map(x => {
-        this.upload(fileList[x])  
-      })
+        this.upload(fileList[x]);
+        var result = "";
+        const reader = new FileReader();
+        reader.readAsDataURL(fileList[x]);
+        reader.onload = function() {
+          result = reader.result;
+          document.getElementById("output").innerHTML = result;
+        };
+      });
     },
-    upload (file) {
-      this.fileName = file.name
-      this.uploading = true
-      this.uploadTask = firebase.storage().ref('images/' + this.fileName).put(file)   
+
+    upload(file) {
+      this.fileName = file.name;
+      this.uploading = true;
+      this.uploadTask = firebase
+        .storage()
+        .ref("images/" + this.fileName)
+        .put(file);
     },
-    deleteImage () {
+    deleteImage() {
       firebase
-        .ref('images/' + this.fileName)
+        .ref("images/" + this.fileName)
         .delete()
         .then(() => {
-          this.uploading = false
-          this.uploadEnd = false
-          this.downloadURL = ''
+          this.uploading = false;
+          this.uploadEnd = false;
+          this.downloadURL = "";
         })
-        .catch((error) => {
-          console.error(`file delete error occured: ${error}`)
-        })
-      this.$refs.form.reset()
+        .catch(error => {
+          console.error(`file delete error occured: ${error}`);
+        });
+      this.$refs.form.reset();
+    },
+    async testfunc() {
+      var image = new Image();
+      image.src = document.getElementById("output").innerHTML;
+      await this.predictImage(image);
+      window.requestAnimationFrame(this.predictImage(image));
     }
   },
   async mounted() {
@@ -229,25 +261,25 @@ export default {
     console.log(maxPredictions);
   },
   watch: {
-    uploadTask: function () {
+    uploadTask: function() {
       this.uploadTask.on(
         "state_changed",
-        (sp) => {
+        sp => {
           this.progressUpload = Math.floor(
-            (sp.bytesTransferred / sp.totalBytes) * 100
+            sp.bytesTransferred / sp.totalBytes * 100
           );
         },
         null,
         () => {
-          this.uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          this.uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             this.uploadEnd = true;
             this.downloadURL = downloadURL;
             this.$emit("downloadURL", downloadURL);
           });
         }
       );
-    },
-  },
+    }
+  }
 };
 </script>
 <style>
