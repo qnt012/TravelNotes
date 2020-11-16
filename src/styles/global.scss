@@ -322,11 +322,13 @@ body {
 }
 
 .input-image {
-    margin-top: 20px;
+    margin-top:20px;
+
     font-size: 15px;
 }
 
-.upload-button {
+.upload-webcam-button, .upload-image-button {
     margin-left: 10px;
-    margin-bottom: 20px;;
+    margin-bottom: 10px;
+    padding: 3px;
 }

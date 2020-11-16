@@ -1,58 +1,42 @@
 <template>
   <div class="note-grid">
     <div class="note-editor">
-      <input
-        class="title-input"
-        type="text"
-        v-model="title"
-        placeholder="Title"/>
+      <input class="title-input" type="text" v-model="title" placeholder="Title" />
       <span>
-        <input
-          class="effectButton"
-          type="button"
-          value="B"
-          onclick="document.execCommand('bold')"/>
+        <input class="effectButton" type="button" value="B" onclick="document.execCommand('bold')" />
         <input
           class="effectButton"
           type="button"
           value="/"
-          onclick="document.execCommand('italic')"/>
+          onclick="document.execCommand('italic')"
+        />
         <input
           class="effectButton"
           type="button"
           value="_"
-          onclick="document.execCommand('underline')"/>
+          onclick="document.execCommand('underline')"
+        />
         <input
           class="effectButton"
           type="button"
           value="-"
-          onclick="document.execCommand('strikeThrough')"/>
+          onclick="document.execCommand('strikeThrough')"
+        />
       </span>
-      <div class="tArea" contentEditable="true"></div>
+      <div class="tArea" contenteditable="true"></div>
       <span class="input-else">
-        <input
-          class="writer-input"
-          type="text"
-          placeholder="writer"
-          v-model="writer"/>
+        <input class="writer-input" type="text" placeholder="writer" v-model="writer" />
         <input type="checkbox" id="due" class="duedate" v-model="due" />
         <label for="due" class="due-label">due date</label>
         <input v-if="due" type="date" v-model="date" />
       </span>
       <div class="selects">
-        <label for="favcolor" class="fav-label"> select color </label>
+        <label for="favcolor" class="fav-label">select color</label>
         <input type="color" id="favcolor" value="#ffffff" v-model="theme" />
 
-        <label for="category-input">category </label>
-        <select
-          v-model="category"
-          id="category-input"
-          @click="UpdateCategoryOption"></select>
-        <input
-          v-if="openCategory"
-          type="text"
-          class="categoryInput"
-          v-model="addCategory"/>
+        <label for="category-input">category</label>
+        <select v-model="category" id="category-input" @click="UpdateCategoryOption"></select>
+        <input v-if="openCategory" type="text" class="categoryInput" v-model="addCategory" />
         <button v-if="!openCategory" @click="openCategory = !openCategory">
           <i class="fas fa-plus"></i>
         </button>
@@ -60,10 +44,25 @@
           <i class="fas fa-check"></i>
         </button>
       </div>
-      <span class="input-image">     
-        <label for="upload-image">upload image</label>
-        <button class='upload-button' @click=startCam>Cam Up!</button>
-        <div v-if=webcam id="cam"/><h1 v-if=webcam>This object is {{ predicted }} </h1>
+      <span class="input-image">
+        <label for="upload-image">Upload A Place Image</label>
+        <button class="upload-webcam-button" @click="startCam">
+          Webcam
+          <i class="fas fa-camera" aria-hidden="true"></i>
+        </button>
+        <div v-if="webcam" id="cam" />
+        <h1 v-if="webcam">This object is {{ predicted }}</h1>
+        <button class="upload-image-button" @click="selectFile" v-if="!uploadEnd && !uploading">Image
+          <i class="far fa-image" aria-hidden="true"></i>
+        </button>
+        <form ref="form">
+          <input id="files" type="file" name="file" ref="uploadInput" :multiple="false" @change="detectFiles($event)" />
+        </form>
+        
+      <img v-if="uploadEnd" :src="downloadURL" width="100%" />
+      <div v-if="uploadEnd">
+        <button class="ma-0" dark small color="error" @click="deleteImage()">Delete</button>
+      </div>
       </span>
       <div class="note-editor-bottom">
         <button @click="createNew" class="fas fas-check-circle">
@@ -75,7 +74,8 @@
 </template>
 
 <script>
-import * as tmImage from '@teachablemachine/image';
+import * as tmImage from "@teachablemachine/image";
+import firebase from 'firebase'
 
 export default {
   data: function () {
@@ -90,9 +90,18 @@ export default {
       addCategory: "",
       html: "",
 
-      model:null,
-      webcam:null,   
-      predicted:"",
+      model: null,
+      webcam: null,
+      predicted: "",
+
+      progressUpload: 0,
+      fileName: "",
+      uploadTask: "",
+      uploading: false,
+      uploadEnd: false,
+      downloadURL: "",
+
+      preview: "",
     };
   },
   computed: {
@@ -106,9 +115,14 @@ export default {
   methods: {
     createNew() {
       var dis = "none";
-      if (this.filter == this.category || this.filter == "--none--" || this.filter =="")
-      { dis = "inline-block"; }
-      
+      if (
+        this.filter == this.category ||
+        this.filter == "--none--" ||
+        this.filter == ""
+      ) {
+        dis = "inline-block";
+      }
+
       this.text = document.getElementsByClassName("tArea")[0].textContent;
       this.html = document.getElementsByClassName("tArea")[0].innerHTML;
       this.$store.commit("addNote", {
@@ -156,28 +170,89 @@ export default {
       }
     },
     async loop() {
-        this.webcam.update(); // update the webcam frame
-        await this.predict();
-        window.requestAnimationFrame(this.loop);
-    },   
-    async predict() {
-        // predict can take in an image, video or canvas html element
-        let prediction = await this.model.predictTopK(this.webcam.canvas,1,true);        
-        this.predicted = prediction[0].className;
+      this.webcam.update(); // update the webcam frame
+      await this.predict();
+      window.requestAnimationFrame(this.loop);
     },
-    async startCam(){
-        this.webcam = new tmImage.Webcam(570,570,true);
-        await this.webcam.setup(); // request access to the webcam
-        await this.webcam.play();
-        document.getElementById("cam").appendChild(this.webcam.canvas);
-        window.requestAnimationFrame(this.loop);
-    } 
+    async predict() {
+      // predict can take in an image, video or canvas html element
+      let prediction = await this.model.predictTopK(
+        this.webcam.canvas,
+        1,
+        true
+      );
+      this.predicted = prediction[0].className;
+    },
+    async startCam() {
+      this.webcam = new tmImage.Webcam(570, 570, true);
+      await this.webcam.setup(); // request access to the webcam
+      await this.webcam.play();
+      document.getElementById("cam").appendChild(this.webcam.canvas);
+      window.requestAnimationFrame(this.loop);
+    },
+    selectFile() {
+      this.$refs.uploadInput.click();
+    },
+    detectFiles (e) {
+      let fileList = e.target.files || e.dataTransfer.files
+      Array.from(Array(fileList.length).keys()).map(x => {
+        this.upload(fileList[x])  
+      })
+    },
+    upload (file) {
+      this.fileName = file.name
+      this.uploading = true
+      this.uploadTask = firebase.storage().ref('images/' + this.fileName).put(file)   
+    },
+    deleteImage () {
+      firebase
+        .ref('images/' + this.fileName)
+        .delete()
+        .then(() => {
+          this.uploading = false
+          this.uploadEnd = false
+          this.downloadURL = ''
+        })
+        .catch((error) => {
+          console.error(`file delete error occured: ${error}`)
+        })
+      this.$refs.form.reset()
+    }
   },
   async mounted() {
-    let baseURL = 'https://teachablemachine.withgoogle.com/models/TGkpUrS94/';
-    this.model = await tmImage.load(baseURL+'model.json', baseURL+'metadata.json');
+    let baseURL = "https://teachablemachine.withgoogle.com/models/TGkpUrS94/";
+    this.model = await tmImage.load(
+      baseURL + "model.json",
+      baseURL + "metadata.json"
+    );
     let maxPredictions = this.model.getTotalClasses();
-    console.log(maxPredictions);    
+    console.log(maxPredictions);
+  },
+  watch: {
+    uploadTask: function () {
+      this.uploadTask.on(
+        "state_changed",
+        (sp) => {
+          this.progressUpload = Math.floor(
+            (sp.bytesTransferred / sp.totalBytes) * 100
+          );
+        },
+        null,
+        () => {
+          this.uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            this.uploadEnd = true;
+            this.downloadURL = downloadURL;
+            this.$emit("downloadURL", downloadURL);
+          });
+        }
+      );
+    },
   },
 };
 </script>
+<style>
+input[type="file"] {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+</style>
