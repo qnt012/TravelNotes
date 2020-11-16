@@ -1,24 +1,23 @@
 <template>
-  <div class="header">     
+  <div class="homeHeader">     
     <img src="../assets/logo.png" @click="moveTo('/')">
-    <p>My Notes</p>
-    <button class="add-btn" @click.prevent="openEditor"><i class="fas fa-plus"></i></button> 
+    <ul>
+        <li @click="moveTo('/note')">My Notes</li>
+        <li @click="moveTo('/browse')">Browse</li>
+        <li>RoadMap</li>
+        <li>Callender</li>
+    </ul>
   </div>
 </template>
-
 
 <script>
 import router from "../router.js";
 export default {
   router,
   methods: {
-    openEditor: function() {
-      this.$emit("openEditor");
-    },
     moveTo(page) {
       var router = this.$router;
       router.push(page);
-      location.reload();
     }
   }
 };
