@@ -6,17 +6,14 @@
 
 <script>
 export default {
-  props: ["notesData"],
   data: function () {
     return {
       theme: "",
-      menuopen: this.notesData[this.notesData.index].moreOpen,
     };
   },
   methods: {
     reColor() {
       this.$emit("recolorMenu", this.theme);
-      this.menuopen = false;
     },
   },
 };
