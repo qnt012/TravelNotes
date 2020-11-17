@@ -87,8 +87,8 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
-        clearAll: (context, time) => {
-            setTimeout(() => context.commit('clearAll'), time);
-        }
+        // clearAll: (context, time) => {
+        //     setTimeout(() => context.commit('clearAll'), time);
+        // }
     }
 })
