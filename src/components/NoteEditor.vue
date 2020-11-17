@@ -45,27 +45,26 @@
         </button>
       </div>
       <span class="input-image">
-        <label for="upload-image">Upload A Place Image</label>
-        <button class="upload-webcam-button" @click="startCam">
+        <label for="upload-image">Upload A Place</label>
+        <button v-if="!uploadEnd && !uploading" class="upload-webcam-button" @click="startCam">
           Webcam
           <i class="fas fa-camera" aria-hidden="true"></i>
         </button>
         <div v-if="webcam" id="cam" />
-        <h1 v-if="webcam">This object is {{ predicted }}</h1>
-        <button class="upload-image-button" @click="selectFile" v-if="!uploadEnd && !uploading">Image
+        <h3 v-if="webcam && !downloadURL">You are staying at " {{ predicted }} " now</h3>
+        <button v-if="!webcam && !uploadEnd && !uploading" class="upload-image-button" @click="selectFile">Image
           <i class="far fa-image" aria-hidden="true"></i>
         </button>
         <form ref="form">
           <input id="files" type="file" name="file" ref="uploadInput" :multiple="false" @change="detectFiles($event)" />
         </form>
-        
       <img id="im" v-if="uploadEnd" :src="downloadURL" width="100%"/>
       <div v-if="uploadEnd">
-        <button class="ma-0" dark small color="error" @click="deleteImage()">Delete</button>
-        <button @click="testfunc">예측</button>
+        <button class="image-delete-button" dark small color="error" @click="deleteImage()">삭제</button>
+        <button class="image-predict-button" @click="testfunc">예측</button>
       </div>
-      <h1 v-if="downloadURL">This object is {{ predicted }}</h1>
-      </span>
+      <h3 v-if="showpredict">Here is " {{ predicted }} "</h3>
+    </span>
       <div class="note-editor-bottom">
         <button @click="createNew" class="fas fas-check-circle">
           <i class="fas fa-check-circle"></i>
@@ -95,17 +94,17 @@ export default {
 
       model: null,
       webcam: null,
-      predicted: "",
       
-
+      predicted: "",
+      preprdicted : "",
+      showpredict: false,
+      
       progressUpload: 0,
       fileName: "",
       uploadTask: "",
       uploading: false,
       uploadEnd: false,
       downloadURL: "",
-
-      preview: ""
     };
   },
   computed: {
@@ -179,6 +178,7 @@ export default {
     async loop() {
       this.webcam.update(); // update the webcam frame
       await this.predict();
+      this.showpredict = true;
       window.requestAnimationFrame(this.loop);
     },
     async predict() {
@@ -190,13 +190,6 @@ export default {
       );
       this.predicted = prediction[0].className;
     },
-    async predictImage(img) {
-      // predict can take in an image, video or canvas html element
-      const predictionI = await this.model.predictTopK(img, 1, true);
-      console.log(predictionI[0]);
-      this.predicted = predictionI[0].className;
-    },
-
     async startCam() {
       this.webcam = new tmImage.Webcam(570, 570, true);
       await this.webcam.setup(); // request access to the webcam
@@ -207,7 +200,6 @@ export default {
     selectFile() {
       this.$refs.uploadInput.click();
     },
-
     detectFiles(e) {
       let fileList = e.target.files || e.dataTransfer.files;
       Array.from(Array(fileList.length).keys()).map(x => {
@@ -221,7 +213,6 @@ export default {
         };
       });
     },
-
     upload(file) {
       this.fileName = file.name;
       this.uploading = true;
@@ -232,22 +223,40 @@ export default {
     },
     deleteImage() {
       firebase
+        .storage()
         .ref("images/" + this.fileName)
         .delete()
         .then(() => {
           this.uploading = false;
           this.uploadEnd = false;
           this.downloadURL = "";
+          this.showpredict = false;
         })
         .catch(error => {
           console.error(`file delete error occured: ${error}`);
         });
       this.$refs.form.reset();
+      this.downloadURL = "";
+    },
+    async predictImage(img) {
+      // predict can take in an image, video or canvas html element
+      const predictionI = await this.model.predictTopK(img, 1, true);
+      console.log(predictionI[0]);
+      if (this.preprdicted == "")
+      {
+        this.predicted = ""
+        this.preprdicted = predictionI[0].className;
+      }  
+      else
+      {
+        this.predicted = predictionI[0].className;
+      }
     },
     async testfunc() {
       var image = new Image();
       image.src = document.getElementById("output").innerHTML;
       await this.predictImage(image);
+      this.showpredict = true;
       window.requestAnimationFrame(this.predictImage(image));
     }
   },
