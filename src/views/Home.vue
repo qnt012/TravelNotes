@@ -2,7 +2,24 @@
   <div class="home">
     <home-header></home-header>
     <app-banner></app-banner>
-    <div>예시 노트들 출력 예정</div>
+    <div style="z-index: 1" class="homeNoteContainer">
+      <div v-for="(note, index) in notes.reverse().slice(0,10)" :key="`note-${index}`" :id="index" class="note" :style="{ 'background-color': note.theme, display: note.display }">
+          <span>
+            <p class="note-title">{{ note.title }}</p>
+            <p v-html="note.html" class="note-text">{{ note.text }}</p>
+          </span>
+          <div class="note-bottom">
+            <span class="date-text" v-if="note.date"
+              >due date: {{ note.date }}</span
+            >
+            <div class="writer-text" v-if="note.writer">
+              <i class="fas fa-user"></i>
+              {{ note.writer }}
+            </div>
+          </div>
+
+      </div>
+    </div>
   </div>
 </template>
 
@@ -10,7 +27,15 @@
 import HomeHeader from "../components/HomeHeader.vue";
 import Banner from "../components/Banner.vue";
 export default {
+  computed: {
+    notes() {
+      return this.$store.getters.getNotes;
+    }
+  },
   methods: {},
+  mounted() {
+    if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
+  },
   components: {
     homeHeader: HomeHeader,
     appBanner: Banner
@@ -21,3 +46,4 @@ export default {
 <style lang="scss">
 @import "../styles/global.scss";
 </style>
+

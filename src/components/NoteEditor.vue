@@ -4,24 +4,9 @@
       <input class="title-input" type="text" v-model="title" placeholder="Title" />
       <span>
         <input class="effectButton" type="button" value="B" onclick="document.execCommand('bold')" />
-        <input
-          class="effectButton"
-          type="button"
-          value="/"
-          onclick="document.execCommand('italic')"
-        />
-        <input
-          class="effectButton"
-          type="button"
-          value="_"
-          onclick="document.execCommand('underline')"
-        />
-        <input
-          class="effectButton"
-          type="button"
-          value="-"
-          onclick="document.execCommand('strikeThrough')"
-        />
+        <input class="effectButton" type="button" value="/" onclick="document.execCommand('italic')"/>
+        <input class="effectButton" type="button" value="_" onclick="document.execCommand('underline')"/>
+        <input class="effectButton"  type="button" value="-" onclick="document.execCommand('strikeThrough')"/>
       </span>
       <div class="tArea" contenteditable="true"></div>
       <span class="input-else">
