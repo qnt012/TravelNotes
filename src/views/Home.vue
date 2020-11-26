@@ -10,15 +10,12 @@
             <p v-html="note.html" class="note-text">{{ note.text }}</p>
           </span>
           <div class="note-bottom">
-            <span class="date-text" v-if="note.date"
-              >due date: {{ note.date }}</span
-            >
+            <span class="date-text" v-if="note.date">due date: {{ note.date }}</span>
             <div class="writer-text" v-if="note.writer">
               <i class="fas fa-user"></i>
               {{ note.writer }}
             </div>
           </div>
-
       </div>
     </div>
   </div>

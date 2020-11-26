@@ -46,9 +46,7 @@
       <img id="im" v-if="uploadEnd" :src="downloadURL" width="100%"/>
       <div v-if="uploadEnd">
         <button class="image-delete-button" dark small color="error" @click="deleteImage()">삭제</button>
-        <button class="image-predict-button" @click="testfunc">예측</button>
       </div>
-      <h3 v-if="showpredict">Here is " {{ predicted }} "</h3>
     </span>
       <div class="note-editor-bottom">
         <button @click="createNew" class="fas fas-check-circle">
@@ -79,17 +77,17 @@ export default {
 
       model: null,
       webcam: null,
-      
+
       predicted: "",
-      preprdicted : "",
+      preprdicted: "",
       showpredict: false,
-      
+
       progressUpload: 0,
       fileName: "",
       uploadTask: "",
       uploading: false,
       uploadEnd: false,
-      downloadURL: "",
+      downloadURL: ""
     };
   },
   computed: {
@@ -106,7 +104,11 @@ export default {
   methods: {
     async createNew() {
       var dis = "none";
-      if (this.filter == this.category || this.filter == "--none--" || this.filter == "") {
+      if (
+        this.filter == this.category ||
+        this.filter == "--none--" ||
+        this.filter == ""
+      ) {
         dis = "inline-block";
       }
 
@@ -115,12 +117,32 @@ export default {
 
       let imgOut = document.getElementById("output").innerHTML;
 
-      if (imgOut != ""){
-        await this.testfunc()
-        this.$store.commit("addNote", {title: this.title, text: this.text, theme: this.theme, date: this.date, writer: this.writer, category: this.category, display: dis, html: this.html, img: imgOut, predict: this.predicted});
-      }
-      else this.$store.commit("addNote", {title: this.title, text: this.text, theme: this.theme, date: this.date, writer: this.writer, category: this.category, display: dis, html: this.html});
-      
+      if (imgOut != "") {
+        await this.testfunc();
+        this.$store.commit("addNote", {
+          title: this.title,
+          text: this.text,
+          theme: this.theme,
+          date: this.date,
+          writer: this.writer,
+          category: this.category,
+          display: dis,
+          html: this.html,
+          img: imgOut,
+          predict: this.predicted
+        });
+      } else
+        this.$store.commit("addNote", {
+          title: this.title,
+          text: this.text,
+          theme: this.theme,
+          date: this.date,
+          writer: this.writer,
+          category: this.category,
+          display: dis,
+          html: this.html
+        });
+
       this.title = "";
       (this.text = ""), (this.theme = "#ffffff");
       this.due = false;
@@ -224,13 +246,10 @@ export default {
       // predict can take in an image, video or canvas html element
       const predictionI = await this.model.predictTopK(img, 1, true);
       console.log(predictionI[0]);
-      if (this.preprdicted == "")
-      {
-        this.predicted = ""
+      if (this.preprdicted == "") {
+        this.predicted = "";
         this.preprdicted = predictionI[0].className;
-      }  
-      else
-      {
+      } else {
         this.predicted = predictionI[0].className;
       }
     },

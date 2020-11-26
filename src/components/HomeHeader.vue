@@ -18,6 +18,7 @@ export default {
     moveTo(page) {
       var router = this.$router;
       router.push(page);
+      if (page == '/') location.reload();
     }
   }
 };
