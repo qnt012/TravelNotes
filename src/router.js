@@ -21,6 +21,6 @@ export default new Router({
             path: '/browse',
             name: 'browse',
             component: () => import("./views/Browse.vue")
-        }
+        },
     ]
 })
