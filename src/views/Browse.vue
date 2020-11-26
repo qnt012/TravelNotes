@@ -1,17 +1,15 @@
 <template>
   <div>
     <home-header></home-header>
-    <naver-maps
-      :height="height"
-      :width="width"
-      :mapOptions="mapOptions"
-      :initLayers="initLayers"
-      @load="onLoad">
-      <naver-marker :lat="35.83488283119064" :lng="129.21910014026193" @click="onMarkerClicked()" @mouseover="onMarkerOver('첨성대')" @mouseout="this.place = ''"/>
-      <naver-marker :lat="37.513152374893636" :lng="127.10271074029531" @click="onMarkerClicked()" @mouseover="onMarkerOver('롯데월드타워')" @mouseout="this.place = ''"/>
-      <naver-marker :lat="37.57613672244167" :lng="126.97682642865742" @click="onMarkerClicked()" @mouseover="onMarkerOver('광화문')" @mouseout="this.place = ''"/>
-      <naver-marker :lat="36.084609378549544" :lng="129.5556382979372" @click="onMarkerClicked()" @mouseover="onMarkerOver('호미곶')" @mouseout="this.place = ''"/>
-      <naver-marker :lat="35.83479346481853" :lng="129.22657274426172" @click="onMarkerClicked()" @mouseover="onMarkerOver('안압지')" @mouseout="this.place = ''"/>
+    <div id="browseTop">
+      <div id="info">{{place}}</div>
+    </div>
+    <naver-maps :height="height" :width="width" :mapOptions="mapOptions" :initLayers="initLayers" @load="onLoad">
+      <naver-marker :lat="35.83488283119064" :lng="129.21910014026193" @click="onMarkerClicked()" @mouseover="onMarkerOver('첨성대')" @mouseout="place = ''"/>
+      <naver-marker :lat="37.513152374893636" :lng="127.10271074029531" @click="onMarkerClicked()" @mouseover="onMarkerOver('롯데월드타워')" @mouseout="place = ''"/>
+      <naver-marker :lat="37.57613672244167" :lng="126.97682642865742" @click="onMarkerClicked()" @mouseover="onMarkerOver('광화문')" @mouseout="place = ''"/>
+      <naver-marker :lat="36.084609378549544" :lng="129.5556382979372" @click="onMarkerClicked()" @mouseover="onMarkerOver('호미곶')" @mouseout="place = ''"/>
+      <naver-marker :lat="35.83479346481853" :lng="129.22657274426172" @click="onMarkerClicked()" @mouseover="onMarkerOver('안압지')" @mouseout="place = ''"/>
     </naver-maps>
     <div v-if=this.search style="z-index: 1" class="noteContainer">
       <div v-for="(note, index) in notes" :key="`note-${index}`" :id="index" class="note" :style="{ 'background-color': note.theme, display: note.display }">
@@ -39,7 +37,7 @@ export default {
   data() {
     return {
       place: "",
-      width: '100%',
+      width: "100%",
       height: 600,
       search: false,
       marker: null,
@@ -79,8 +77,6 @@ export default {
     },
     onMarkerOver(p) {
       this.place = p;
-      
-      console.log(event);
     },
     onMarkerClicked() {
       for (var i = 0; i < this.notes.length; i++) {

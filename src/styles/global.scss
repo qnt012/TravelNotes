@@ -458,3 +458,28 @@ body {
         opacity: 1;
     }
 }
+
+#browseTop {
+    width: 100%;
+    height:70px;
+    padding: 10px;
+    text-align: center;
+    background-color: rgb(143, 145, 248)
+}
+
+#info {
+    display: inline-block;
+    position: relative;
+    z-index: 10000;
+    width: 30%;
+    height: 50px;
+    padding: 10px;
+    border-radius: 3px;
+    background-color:white;
+
+    text-align: center;
+    font-family: 'NanumBarunGothic', 'serif';
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(143, 145, 248)
+}
