@@ -38,7 +38,7 @@ export const store = new Vuex.Store({
     },
     mutations: {
         addNote: (state, payload) => {
-            state.notes.push({ title: payload.title, text: payload.text, theme: payload.theme, idx: state.notenum, date: payload.date, writer: payload.writer, category: payload.category, html: payload.html, display: payload.display, moreOpen: false });
+            state.notes.push({ title: payload.title, text: payload.text, theme: payload.theme, idx: state.notenum, date: payload.date, writer: payload.writer, category: payload.category, html: payload.html, img: payload.img, predict: payload.predict, display: payload.display, moreOpen: false });
             state.notenum += 1;
         },
         deleteNote: (state, index) => {

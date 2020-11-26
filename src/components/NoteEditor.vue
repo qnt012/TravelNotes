@@ -104,28 +104,23 @@ export default {
     }
   },
   methods: {
-    createNew() {
+    async createNew() {
       var dis = "none";
-      if (
-        this.filter == this.category ||
-        this.filter == "--none--" ||
-        this.filter == ""
-      ) {
+      if (this.filter == this.category || this.filter == "--none--" || this.filter == "") {
         dis = "inline-block";
       }
 
       this.text = document.getElementsByClassName("tArea")[0].textContent;
       this.html = document.getElementsByClassName("tArea")[0].innerHTML;
-      this.$store.commit("addNote", {
-        title: this.title,
-        text: this.text,
-        theme: this.theme,
-        date: this.date,
-        writer: this.writer,
-        category: this.category,
-        display: dis,
-        html: this.html
-      });
+
+      let imgOut = document.getElementById("output").innerHTML;
+
+      if (imgOut != ""){
+        await this.testfunc()
+        this.$store.commit("addNote", {title: this.title, text: this.text, theme: this.theme, date: this.date, writer: this.writer, category: this.category, display: dis, html: this.html, img: imgOut, predict: this.predicted});
+      }
+      else this.$store.commit("addNote", {title: this.title, text: this.text, theme: this.theme, date: this.date, writer: this.writer, category: this.category, display: dis, html: this.html});
+      
       this.title = "";
       (this.text = ""), (this.theme = "#ffffff");
       this.due = false;
@@ -133,7 +128,9 @@ export default {
       this.writer = "";
       this.category = "";
       this.html = "";
+      this.predicted = "";
       document.getElementsByClassName("tArea")[0].innerHTML = "";
+      document.getElementsById("output")[0].innerHTML = "";
     },
     createNewCategory() {
       this.openCategory = false;
@@ -242,7 +239,7 @@ export default {
       image.src = document.getElementById("output").innerHTML;
       await this.predictImage(image);
       this.showpredict = true;
-      window.requestAnimationFrame(this.predictImage(image));
+      await this.predictImage(image);
     }
   },
   async mounted() {

@@ -6,6 +6,7 @@
       <div v-for="(note, index) in notes.reverse().slice(0,10)" :key="`note-${index}`" :id="index" class="note" :style="{ 'background-color': note.theme, display: note.display }">
           <span>
             <p class="note-title">{{ note.title }}</p>
+            <img id="noteImg" v-if='note.img != ""' :src="note.img" width="100%"/>
             <p v-html="note.html" class="note-text">{{ note.text }}</p>
           </span>
           <div class="note-bottom">
