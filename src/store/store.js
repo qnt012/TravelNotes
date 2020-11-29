@@ -12,6 +12,7 @@ export const store = new Vuex.Store({
         selected: -1,
         updaterOpen: false,
         updaterButton: true,
+        paths:[]
     },
     getters: {
         getNotes: state => {
@@ -34,7 +35,11 @@ export const store = new Vuex.Store({
         },
         getUpdaterButton: state => {
             return state.updaterButton;
-        }
+        },
+        getPaths: state => {
+            return state.paths;
+        },
+
     },
     mutations: {
         addNote: (state, payload) => {
@@ -84,7 +89,13 @@ export const store = new Vuex.Store({
         },
         setUpdaterButton: (state, payload) => {
             state.updaterButton = payload;
-        }
+        },
+        newPath: (state, payload) => {
+            state.paths.push(payload);
+        },
+        restorePaths: (state) => {
+            state.paths = JSON.parse(localStorage.getItem('paths'));
+        },
     },
     actions: {
         // clearAll: (context, time) => {

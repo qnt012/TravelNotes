@@ -4,7 +4,7 @@
     <ul>
         <li @click="moveTo('/note')">My Notes</li>
         <li @click="moveTo('/browse')">Browse</li>
-        <li>RoadMap</li>
+        <li @click="moveTo('/roadmap')">RoadMap</li>
         <li>Callender</li>
     </ul>
   </div>
