@@ -12,7 +12,6 @@ export const store = new Vuex.Store({
         selected: -1,
         updaterOpen: false,
         updaterButton: true,
-        paths:[]
     },
     getters: {
         getNotes: state => {
@@ -35,9 +34,6 @@ export const store = new Vuex.Store({
         },
         getUpdaterButton: state => {
             return state.updaterButton;
-        },
-        getPaths: state => {
-            return state.paths;
         },
 
     },
