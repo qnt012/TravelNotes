@@ -19,14 +19,18 @@
         :callbackFunction="callbackFunction"
       />
     </div>
+    <button @click=status>확인</button>
+    <div id="em"></div>
+    <a href="http://nid.naver.com/nidlogin.logout" @click=out>로그아웃</a>
   </div>
 </template>
 
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"></script>
 <script>
 import router from "../router.js";
 import NaverLogin from "vue-naver-login";
 
-let callbackFunction = (status) => {
+let callbackFunction = status => {
   if (status) {
     /* (5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 */
     var email = NaverLogin.user.getEmail();
@@ -51,12 +55,12 @@ let callbackFunction = (status) => {
 export default {
   router,
   components: {
-    NaverLogin,
+    NaverLogin
   },
   computed: {
     email() {
       return this.$store.getters.getEmail;
-    },
+    }
   },
   methods: {
     moveTo(page) {
@@ -64,7 +68,23 @@ export default {
       router.push(page);
     },
     callbackFunction,
-  },
+    status() {
+      const naverLogin = new naver.LoginWithNaverId({
+        clientId: "1QKUkUg9yH08n9vN4Zhz",
+        isPopup: false
+      });
+      naverLogin.init();
+      naverLogin.getLoginStatus(function(status) {
+        if (status) {
+          const email = naverLogin.user.getEmail();
+          document.getElementById("em").innerHTML = email;
+          console.log(email);
+        } else {
+          console.log("AccessToken이 올바르지 않습니다.");
+        }
+      });
+    },
+  }
 };
 </script>
 
