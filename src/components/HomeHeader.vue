@@ -4,7 +4,7 @@
     <ul>
         <li @click="moveTo('/note')">My Notes</li>
         <li @click="moveTo('/browse')">Browse</li>
-        <li>RoadMap</li>
+        <li @click="moveTo('/roadmap')">RoadMap</li>
         <li>Callender</li>
     </ul>
   </div>
@@ -18,7 +18,10 @@ export default {
     moveTo(page) {
       var router = this.$router;
       router.push(page);
-      if (page == '/') location.reload();
+      if (page == "/") {
+        location = "http://localhost:8080/"
+        location.reload();
+      }
     }
   }
 };

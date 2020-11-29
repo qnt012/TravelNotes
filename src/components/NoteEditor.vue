@@ -151,7 +151,11 @@ export default {
       this.category = "";
       this.html = "";
       this.predicted = "";
+      this.uploadEnd = false;
+      this.uploading = false;
       document.getElementsByClassName("tArea")[0].innerHTML = "";
+
+      document.getElementById("im").src = "";
       document.getElementsById("output")[0].innerHTML = "";
     },
     createNewCategory() {

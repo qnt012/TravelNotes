@@ -21,6 +21,11 @@ export default new Router({
             path: '/browse',
             name: 'browse',
             component: () => import("./views/Browse.vue")
+        },
+        {
+            path: '/roadmap',
+            name: 'roadmap',
+            component: () => import("./views/RoadMap.vue")
         }
     ]
 })
