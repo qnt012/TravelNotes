@@ -14,10 +14,11 @@
             <naver-polyline :path="paths" @load="onLoadLine"/>
        </div>
     </naver-maps>
-    <div id="roadmapCategory">
-        <button id="btn-category" v-for="(category, index) in categories" :key="`note-${index}`" @click="selectCategory(category)" >{{category}}</button>
+      <div id="roadmapCategory">
+        <button id="btn-category" v-for="(category, index) in categories" :key="`note-${index}`" @click="selectCategory(category)">{{category}}</button>
     </div>
-    <div v-if="search" style="z-index: 1" class="noteContainer">
+    <div class="noteContainerHeader"/>
+    <div v-if="this.search" style="z-index: 1" class="noteContainer">
       <div v-for="(note, index) in notes" :key="`note-${index}`" :id="index" class="note" :style="{ 'background-color': note.theme, display: note.display }">
         <span>
           <p class="note-title">{{ note.title }}</p>

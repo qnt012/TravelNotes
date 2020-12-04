@@ -15,6 +15,7 @@
       v-if="this.updaterOpen == true && editorOpen == false"
     ></app-note-updater>
     <app-bar :categoriesData="categories"></app-bar>
+    <div class="noteContainerHeader"></div>
     <div class="allNote">
       <div style="z-index: 1" class="noteContainer">
         <div v-for="(note, index) in notes" :key="`note-${index}`" :id="index" @click="select(index)" class="note" draggable="true" @dragstart="onDrag" @dragover.prevent="onDragOver" @dragleave.prevent="onDragLeave" @drop="onDrop" :style="{ 'background-color': note.theme, display: note.display }">
@@ -41,7 +42,7 @@
         </div>
       </div>
       <div class="noteList">
-        <h2>[Note List]</h2>
+        <h2>Note List</h2>
         <app-note-dir @noteLink="move" :notesData="notes"></app-note-dir>
       </div>
     </div>

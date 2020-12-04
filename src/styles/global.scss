@@ -16,7 +16,7 @@ body {
 }
 
 ::placeholder {
-    color: #ccc;
+    color: #999;
     font-size: 15px;
 }
 
@@ -26,17 +26,32 @@ body {
     display: flex;
     align-items: center;
     // justify-content: center;
-    background: #fff;
+    background:  #dcad67;
     color: black;
     margin-bottom: 50px;
     & p {
+        display: inline-block;
         font-size:20px;
-        margin:25px;
+        font-family: 'NanumBarunGothic', monospace;
+        text-align: center;
+        padding: 5px;
+        margin-right: 50px;
+        color: white;
+        font-weight: bolder;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    & p:hover {
+        //transform: scale(1.1);
+        color:#8b4513;
+        box-shadow: 0 -2px 0 0px #8b4513 inset; 
+        //background-color: black;
+        //color: white;
     }
     & img {
-        margin-left:25px;
-        margin-right:25px;
-        height:50px;
+        margin-left:20px;
+        margin-right:20px;
+        height:60px;
         cursor: pointer;
     }
 }
@@ -45,6 +60,8 @@ body {
     padding: 10px 10px 10px 0px;
     border: none;
     outline: none;
+    background-color:#fff3dd00;
+    
 }
 
 .title-input::placeholder {
@@ -53,13 +70,20 @@ body {
 
 
 .add-btn, .del-btn{
-    padding: 5px 10px;
-    margin-left: 10px;
-    border: none;
-    color: #000;
-    outline: none;
-    font-size: 10px;
-    cursor: pointer;
+    box-shadow:inset 0px 0px 0px 0px #fce2c1;
+	background:linear-gradient(to bottom, rgb(255, 230, 0) 5%, rgb(255, 196, 0) 100%);
+	border-radius:42px;
+	border:2px solid #ffa200;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+    font-weight:bold;
+	padding:7px 15px;
+	text-decoration:none;
+    text-shadow:0px 0px 50px #cc9f52;
+    margin-right: 5px;
 }   
 
 .note-editor {    
@@ -67,19 +91,19 @@ body {
     margin: 30px auto;
     display: flex;
     flex-direction: column;
-    background: #fff;
     padding: 16px;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
-    border-radius: 3px;
+    background-color:#fff3ddb6;
+    border-radius: 20px;
+    border:2px solid #f1d199;
     .tArea {
-        border-radius: 3px;
         overflow: auto;
         font-size: 13px;
         height: 180px;
-        padding: 10px;
+        padding: 15px;
         resize: none;
         margin-top:4px;
-        border: 1px solid rgba(0,0,0,.15);
+        border: 3px solid rgba(0, 0, 0, 0.185);
+        border-radius: 10px;
         &:hover {
             outline: 0;
         }
@@ -87,7 +111,6 @@ body {
             outline: 0;
         }
     }
-    
 }
 
 .note-title {
@@ -96,23 +119,29 @@ body {
 }
 
 .noteContainer {
-    column-count: 4;
+    column-count: 6;
     column-gap: 1em;
-    margin: 50px 25px;
-    width: 80%;
+    padding: 40px;
+    margin-bottom: 50px;
+    width: 100%;
     height: 100%;
+    background-image: url('../assets/tileable_wood_texture.png');
+}
+
+.noteContainerHeader{
+    padding: 10px;
+    background: repeating-linear-gradient(45deg, #e1b771, #e1b771 11px, #cd8f49 0, #cd8f49 17px);
 }
 
 .homeNoteContainer {
-    column-count: 4;
+    column-count: 6;
     column-gap: 1em;
     padding: 25px;
     margin-bottom: 50px;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-image: url('../assets/tileable_wood_texture.png');
 }
-
 
 .note {
     position: relative;
@@ -222,19 +251,29 @@ body {
     padding: 5px;
     padding-left: 30px;
     padding-right: 30px;
-    background-color: rgb(143, 145, 248);
+    font-weight: bolder;
+    color: white;
+    background-color: #ff8200;
     border-radius: 30px 1px;
     box-shadow: 0 0.25rem 0.25rem rgba(0,0,0,.15);
 }
 
 #note-filter {
     font-family: "Comic Sans MS";
-    background-color: rgb(143, 145, 248);
+    font-weight: bolder;
+    color: white;
+    background-color: #ff8200;
     border: none;
 }
 
 #favcolor {
     margin-right:55px;
+    margin-left: 5px;
+}
+
+#category-input {
+    margin-left: 5px;
+    margin-right: 2px;
 }
 
 .categoryInput {
@@ -291,35 +330,75 @@ body {
 
 .allNote {
     display: flex;
+    background-image: url('../assets/tileable_wood_texture.png');
 }
 
 .noteList {
     position: relative;
     width: 20%;
-    top: -30px;
-    margin: 0px 25px 0px 0px;
+    top: 30px;
+    height: 80%;
+    margin: 10px 30px 30px 10px;
+    border-style: groove;
+    border-width: 15px;
+    border-color: #d2691E;
+    border-radius: 10px;
+    animation: swing ease-in-out 1s infinite alternate;
+    transform-origin: center -20px;
+    float:left;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+    background-image: url('../assets/handmadepaper.png');
     h2 {
+        font-family: "Times New Roman", Times, serif;
+        font-style: italic;
         text-align: center;
     }
 }
 
+.noteList:after{
+    content: '';
+    position: absolute;  
+    width: 30px; height: 30px; 
+    border: 1px solid #999;
+    top: -30px; left: 46%;
+    z-index: 0;
+    border-bottom: none;
+    border-right: none;
+    transform: rotate(45deg);
+}
+/* nail */
+.noteList:before{
+    content: '';
+    position: absolute;
+    width: 15px; height: 15px;
+    top: -35px; left: 49%;
+    z-index: 1;
+    border-radius: 50% 50%;
+    background: #000;
+}
+ 
+@keyframes swing {
+    0% { transform: rotate(1deg); }
+    100% { transform: rotate(-1deg); }
+}
+
 .listNote {
-    background-color: lightyellow;
-    padding: 5px;
-    margin: 5px;
+    background-color:  white;
+    color: sienna;
+    padding: 6px;
+    margin: 10px;
     border-radius: 5px 5px 5px 5px;
     cursor: pointer;
 }
 
 .effectButton{
-    width: 22px;
-    border-radius: 5px 5px 5px 5px;
-    font-size: 10px;
-    //background-color: lightcyan;
-    margin-right: 5px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 3px;
     margin-bottom: 2px;
-    padding: 3px 5px;
-    //border: 1px solid black;
+    padding: 5px 15px;
+    border-color: #999;
     cursor: pointer;
 }
 
@@ -367,8 +446,8 @@ body {
 }
 .banner {
     position: relative;
-    width: 1000px;
-    height: 600px;
+    width: 1500px;
+    height: 500px;
     margin:0 auto;
     padding:0; 
     overflow: hidden;
@@ -381,45 +460,46 @@ body {
 }
 .banner ul li {
     float: left;
-    width: 1000px; 
-    height: 600px; 
+    width: 1500px;
+    height: 500px;
     margin:0; 
     padding:0;
 }
 
 .banner ul li img {
-    width: 1000px; 
-    height: 600px; 
+    width: 1500px;
+    height: 500px; 
 }
 
 .homeHeader {
     display: flex;
     align-items: center;
     // justify-content: center;
-    background: #fff;
+    background: #dcad67;
     color: black;
     li {
         display: inline-block;
         font-size:20px;
-        font-family: 'NanumBarunGothic', 'serif';
+        font-family: 'NanumBarunGothic', monospace;
         text-align: center;
         padding: 5px;
         margin-right: 50px;
-        color: gray;
+        color: white;
+        font-weight: bolder;
         transition: 0.3s;
         cursor: pointer;
     }
     li:hover {
         //transform: scale(1.1);
-        color: black;
-        box-shadow: 0 -2px 0 0px #000 inset; 
+        color:#8b4513;
+        box-shadow: 0 -2px 0 0px #8b4513 inset; 
         //background-color: black;
         //color: white;
     }
     & img {
-        margin-left:25px;
-        margin-right:25px;
-        height:50px;
+        margin-left:20px;
+        margin-right:20px;
+        height:60px;
         cursor: pointer;
     }
 }
@@ -461,43 +541,40 @@ body {
 
 #browseTop {
     width: 100%;
-    height:70px;
-    padding: 10px;
+    height:56px;
+    padding: 8px;
     text-align: center;
-    background-color: rgb(143, 145, 248)
+    background-color: #906D3b
 }
 
 #info {
     display: inline-block;
     position: relative;
     z-index: 10000;
-    width: 30%;
-    height: 50px;
-    padding: 10px;
-    border-radius: 3px;
+    width: 25%;
+    height: 40px;
+    padding: 6px;
+    border-radius: 10px;
     background-color:white;
-
     text-align: center;
     font-family: 'NanumBarunGothic', 'serif';
     font-size: 28px;
     font-weight: bold;
-    color: rgb(143, 145, 248)
+    color: #8b4513
 }
 
 #roadmapTop {
     width: 100%;
-    height:70px;
-    padding: 10px;
+    height:56px;
+    padding: 8px;
     text-align: center;
-    background-color: rgb(143, 145, 248)
+    background-color: #906D3b
 }
 
 #roadmapCategory {
     width: 100%;
     padding: 10px;
-    float: right;
-    background-color: rgb(143, 145, 248);
-    margin-bottom: 10px;
+    background-color: #906D3b
 }
 
 #btn-category {
