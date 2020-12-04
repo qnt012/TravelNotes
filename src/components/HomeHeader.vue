@@ -8,10 +8,10 @@
       <li>Callender</li>
     </ul>
 
-    <div class="nlogin">
+    <div class="nlogin" v-if="isLogIn">
       <NaverLogin
         client-id="1QKUkUg9yH08n9vN4Zhz"
-        callback-url="http://localhost:8080/"
+        callback-url="http://127.0.0.1:8080/"
         v-bind:is-popup="false"
         v-bind:button-type="3"
         v-bind:button-height="30"
@@ -19,9 +19,17 @@
         :callbackFunction="callbackFunction"
       />
     </div>
-    <button @click=status>확인</button>
+    <button v-if="isLogIn" @click="[status(), (isLogIn = !isLogIn)]">
+      확인
+    </button>
     <div id="em"></div>
-    <a href="http://nid.naver.com/nidlogin.logout" @click=out>로그아웃</a>
+    <button
+      type="button"
+      onclick="location.href='http://nid.naver.com/nidlogin.logout'"
+      v-if="!isLogIn"
+    >
+      로그아웃
+    </button>
   </div>
 </template>
 
@@ -30,7 +38,7 @@
 import router from "../router.js";
 import NaverLogin from "vue-naver-login";
 
-let callbackFunction = status => {
+let callbackFunction = (status) => {
   if (status) {
     /* (5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 */
     var email = NaverLogin.user.getEmail();
@@ -55,12 +63,17 @@ let callbackFunction = status => {
 export default {
   router,
   components: {
-    NaverLogin
+    NaverLogin,
+  },
+  data: function () {
+    return {
+      isLogIn: true,
+    };
   },
   computed: {
     email() {
       return this.$store.getters.getEmail;
-    }
+    },
   },
   methods: {
     moveTo(page) {
@@ -71,20 +84,20 @@ export default {
     status() {
       const naverLogin = new naver.LoginWithNaverId({
         clientId: "1QKUkUg9yH08n9vN4Zhz",
-        isPopup: false
+        isPopup: false,
       });
       naverLogin.init();
-      naverLogin.getLoginStatus(function(status) {
+      naverLogin.getLoginStatus(function (status) {
         if (status) {
           const email = naverLogin.user.getEmail();
           document.getElementById("em").innerHTML = email;
           console.log(email);
         } else {
-          console.log("AccessToken이 올바르지 않습니다.");
+          alert("AccessToken이 올바르지 않습니다.");
         }
       });
     },
-  }
+  },
 };
 </script>
 
