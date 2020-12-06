@@ -8,35 +8,39 @@
       <li>Callender</li>
     </ul>
 
-    <div class="nlogin" v-if="isLogIn">
+    <div @click="Disp" id="nlogin">
       <NaverLogin
         client-id="1QKUkUg9yH08n9vN4Zhz"
-        callback-url="http://127.0.0.1:8080/"
+        callback-url="http://localhost:8080/"
         v-bind:is-popup="false"
         v-bind:button-type="3"
         v-bind:button-height="30"
-        button-color="green"
+        button-color="white"
         :callbackFunction="callbackFunction"
       />
     </div>
-    <button v-if="isLogIn" @click="[status(), (isLogIn = !isLogIn)]">
-      확인
-    </button>
+    <button @click="status">확인</button>
+    <button @click="st">스타일</button>
     <div id="em"></div>
-    <button
-      type="button"
-      onclick="location.href='http://nid.naver.com/nidlogin.logout'"
-      v-if="!isLogIn"
-    >
-      로그아웃
-    </button>
+    <div id="at"></div>
+    <button @click="logout">로그아웃</button>
   </div>
 </template>
 
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"></script>
 <script>
 import router from "../router.js";
 import NaverLogin from "vue-naver-login";
+import $ from "jquery";
+
+// $(document).ready(function () {
+//   if ($("#nlogin").css("visibility") == "visible") {
+//     $("#nlogin").show();
+//   } else {
+//     $("#nlogin").hide();
+//   }
+// });
 
 let callbackFunction = (status) => {
   if (status) {
@@ -65,20 +69,57 @@ export default {
   components: {
     NaverLogin,
   },
-  data: function () {
-    return {
-      isLogIn: true,
-    };
+  mounted() {
+    if (localStorage.getItem("notes")) 
+      this.$store.commit("restoreNote");
   },
   computed: {
     email() {
       return this.$store.getters.getEmail;
     },
+    notes() {
+      return this.$store.getters.getNotes;
+    },
   },
   methods: {
+    // Disp() {
+    //   var con = document.getElementById("nlogin");
+    //   con.style.visibility = "hidden";
+    //   console.log(con.style.visibility);
+    // },
+    // st() {
+    //   var con = document.getElementById("nlogin");
+    //   con.style.visibility = "hidden";
+    //   console.log(con.style.visibility);
+    // },
+    logout() {
+      var deleteURL =
+        "https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=jyvqXeaVOVmV&client_secret=527300A0_COq1_XV33cf&access_token=" +
+        document.getElementById("at").innerHTML +
+        "&service_provider=NAVER";
+      location.href = deleteURL;
+      location.href = "http://nid.naver.com/nidlogin.logout";
+
+      localStorage.removeItem("com.naver.nid.access_token");
+      localStorage.removeItem("com.naver.nid.oauth.state_token");
+
+      document.getElementById("em").innerHTML = "";
+      document.getElementById("at").innerHTML = "";
+
+      // var con = document.getElementById("nlogin");
+      // con.style.visibility = "visible";
+    },
     moveTo(page) {
       var router = this.$router;
       router.push(page);
+      this.$store.commit("setEmail", document.getElementById("em").innerHTML);
+
+      // for (var i = 0; i < this.notes.length; i++) {
+      //   this.notes[i].display = "none";
+      //   if (this.notes[i].writer == this.email) {
+      //     this.notes[i].display = "inline-block";
+      //   }
+      // }
     },
     callbackFunction,
     status() {
@@ -92,8 +133,12 @@ export default {
           const email = naverLogin.user.getEmail();
           document.getElementById("em").innerHTML = email;
           console.log(email);
+
+          const token = naverLogin.accessToken.accessToken;
+          document.getElementById("at").innerHTML = token;
+          console.log(token);
         } else {
-          alert("AccessToken이 올바르지 않습니다.");
+          console.log("AccessToken이 올바르지 않습니다.");
         }
       });
     },

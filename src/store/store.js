@@ -12,7 +12,7 @@ export const store = new Vuex.Store({
         selected: -1,
         updaterOpen: false,
         updaterButton: true,
-        email: ""
+        email: "eeee",
     },
     getters: {
         getNotes: state => {
@@ -38,7 +38,7 @@ export const store = new Vuex.Store({
         },
         getEmail: state => {
             return state.email;
-        }
+        },
     },
     mutations: {
         addNote: (state, payload) => {

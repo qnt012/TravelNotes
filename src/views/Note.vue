@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <app-header
-      @openEditor="(editorOpen = !editorOpen), reUpdaterOpen(false), reUpdaterButton(true)"
+      @openEditor="
+        (editorOpen = !editorOpen), reUpdaterOpen(false), reUpdaterButton(true)
+      "
     ></app-header>
     <app-note-search-menu @getKeyword="findKeyword"></app-note-search-menu>
     <app-note-editor
@@ -32,13 +34,17 @@
         >
           <span
             class="update"
-            @click="(editorOpen = false), reUpdaterOpen(true), reUpdaterButton(false)"
+            @click="
+              (editorOpen = false), reUpdaterOpen(true), reUpdaterButton(false)
+            "
           >
             <i v-if="updaterButton" class="fas fa-edit" id="fa-edit"></i>
           </span>
           <span
             class="delete"
-            @click.prevent="deleteNote(index), reUpdaterOpen(false), editorOpen = false"
+            @click.prevent="
+              deleteNote(index), reUpdaterOpen(false), (editorOpen = false)
+            "
           >
             <i class="fas fa-times"></i>
           </span>
@@ -84,7 +90,6 @@ import Bar from "../components/Bar.vue";
 import NoteSearchMenu from "../components/NoteSearchMenu.vue";
 import NoteDir from "../components/NoteDirectory.vue";
 
-
 export default {
   name: "App",
   data: function () {
@@ -110,7 +115,7 @@ export default {
     },
     updaterButton() {
       return this.$store.getters.getUpdaterButton;
-    }
+    },
   },
   filters: {
     capitalize: function (value) {

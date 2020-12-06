@@ -143,6 +143,7 @@ body {
 
 .input-else, .selects {
     font-size: 15px;
+    margin: 3px;
 }
 
 .note-bottom {
@@ -158,12 +159,12 @@ body {
 
 .writer-text {
     padding:3px;
-    font-size:15px;
+    font-size:12px;
 }
 
 #img-writer {
-    width: 15px;
-    height: 15px;
+    width: 12px;
+    height: 12px;
 }
 
 .due-label {
@@ -381,11 +382,12 @@ body {
     height: 600px; 
 }
 
-.nlogin {
+#nlogin {
     cursor: pointer;
     float: right;
     margin-left: auto;
     margin-right: 30px;
+    visibility: visible;
 }
 
 .homeHeader {
