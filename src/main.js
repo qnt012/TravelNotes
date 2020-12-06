@@ -2,7 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import firebase from 'firebase'
 import naver from 'vue-naver-maps';
+import Vuetify from 'vuetify'
 
+Vue.use(Vuetify)
 Vue.use(naver, {
   clientID: 'da5vvnjqyi',
   useGovAPI: false, //공공 클라우드 API 사용 (선택)
@@ -26,6 +28,7 @@ firebase.initializeApp(firebaseConfig);
 import { store } from './store/store.js'
 
 new Vue({
+  vuetify: new Vuetify(),
   store,
   render: h => h(App),
 }).$mount('#app')

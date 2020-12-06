@@ -5,7 +5,7 @@
         <li @click="moveTo('/note')">My Notes</li>
         <li @click="moveTo('/browse')">Browse</li>
         <li @click="moveTo('/roadmap')">RoadMap</li>
-        <li>Callender</li>
+        <li @click="moveTo('/calendar')">Calendar</li>
     </ul>
   </div>
 </template>
@@ -19,10 +19,15 @@ export default {
       var router = this.$router;
       router.push(page);
       if (page == "/") {
-        location = "http://localhost:8080/"
+        location = "http://localhost:8080/";
         location.reload();
       }
     }
   }
 };
 </script>
+
+<style lang="scss">
+@import "../styles/global.scss";
+</style>
+
