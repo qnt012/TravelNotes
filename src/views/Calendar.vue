@@ -1,17 +1,16 @@
 <template>
   <v-app>
-    <home-header></home-header>
+    <cal-header></cal-header>
     <v-sheet
       tile
       height="54"
       class="d-flex"
     >
       <v-btn
-        icon
         class="ma-2"
         @click="$refs.calendar.prev()"
       >
-        <v-icon>mdi-chevron-left</v-icon>
+      prev
       </v-btn>
       <v-select
         v-model="type"
@@ -42,11 +41,10 @@
       ></v-select>
       <v-spacer></v-spacer>
       <v-btn
-        icon
         class="ma-2"
         @click="$refs.calendar.next()"
       >
-        <v-icon>mdi-chevron-right</v-icon>
+      next
       </v-btn>
     </v-sheet>
     <v-sheet height="800">
@@ -66,14 +64,14 @@
 </template>
 
 <script>
-import HomeHeader from "../components/HomeHeader.vue";
+import CalHeader from "../components/CalHeader.vue";
 import "vuetify/dist/vuetify.min.css";
 export default {
   data: () => ({
     type: "month",
-    types: ["month", "week", "day", "4day"],
+    types: ["month"],
     mode: "stack",
-    modes: ["stack", "column"],
+    modes: ["stack"],
     weekday: [0, 1, 2, 3, 4, 5, 6],
     weekdays: [
       { text: "Sun - Sat", value: [0, 1, 2, 3, 4, 5, 6] },
@@ -91,43 +89,43 @@ export default {
       "green",
       "orange",
       "grey darken-1"
-    ],
-    names: [
-      "Meeting",
-      "Holiday",
-      "PTO",
-      "Travel",
-      "Event",
-      "Birthday",
-      "Conference",
-      "Party"
     ]
   }),
   components: {
-    homeHeader: HomeHeader
+    calHeader: CalHeader
+  },
+  computed: {
+    notes() {
+      return this.$store.getters.getNotes;
+    },
+    categories() {
+      return this.$store.getters.getCategories;
+    }
   },
   methods: {
-    getEvents({ start, end }) {
+    findCategoryIndex(c) {
+      for (var i = 0; i < this.categories.length; i++)
+        if (this.categories[i] == c) return i;
+    },
+    getEvents() {
       const events = [];
+      //const days = (max.getTime() - min.getTime()) / 86400000;
+      const eventCount = this.notes.length;
 
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
+      console.log(this.notes);
+      console.log(this.categories);
 
       for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - firstTimestamp % 900000);
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-        const second = new Date(first.getTime() + secondTimestamp);
+        const first = new Date(this.notes[i].date);
+        const second = new Date(this.notes[i].date);
+
+        console.log();
 
         events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
+          name: this.notes[i].category + ": " + this.notes[i].title,
           start: first,
           end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay
+          color: this.colors[this.findCategoryIndex(this.notes[i].category) % 7]
         });
       }
 
@@ -139,6 +137,11 @@ export default {
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     }
+  },
+  mounted() {
+    if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
+    if (localStorage.getItem("categories"))
+      this.$store.commit("restoreCategory");
   }
 };
 </script>
