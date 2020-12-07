@@ -21,12 +21,11 @@ export default {
       this.$emit("openEditor");
     },
     moveTo(page) {
+      if (page == "/") {
+        location.href = "http://localhost:8080/";
+      }
       var router = this.$router;
       router.push(page);
-      if (page == "/") {
-        location = "http://localhost:8080/"
-        location.reload();
-      }
     },
     deleteAll() {
       this.$store.commit("clearAll");

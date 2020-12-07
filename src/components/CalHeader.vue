@@ -1,14 +1,10 @@
 <template>
-  <div class="homeHeader">     
-    <img src="../assets/logo.png" @click="moveTo('/')">
-    <ul>
-        <li @click="moveTo('/note')">My Notes</li>
-        <li @click="moveTo('/browse')">Browse</li>
-        <li @click="moveTo('/roadmap')">RoadMap</li>
-        <li @click="moveTo('/calendar')">Calendar</li>
-    </ul>
+  <div class="header">
+    <img src="../assets/logo.png" @click="moveTo('/')" />
+    <p>Calender</p>
   </div>
 </template>
+
 
 <script>
 import router from "../router.js";
@@ -29,4 +25,3 @@ export default {
 <style lang="scss">
 @import "../styles/global.scss";
 </style>
-

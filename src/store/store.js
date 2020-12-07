@@ -91,7 +91,7 @@ export const store = new Vuex.Store({
         },
         restorePaths: (state) => {
             state.paths = JSON.parse(localStorage.getItem('paths'));
-        },
+        }
     },
     actions: {
         // clearAll: (context, time) => {
