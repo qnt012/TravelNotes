@@ -12,6 +12,9 @@ export const store = new Vuex.Store({
         selected: -1,
         updaterOpen: false,
         updaterButton: true,
+        email: "",
+        in: true,
+        out: false,
     },
     getters: {
         getNotes: state => {
@@ -35,7 +38,15 @@ export const store = new Vuex.Store({
         getUpdaterButton: state => {
             return state.updaterButton;
         },
-
+        getEmail: state => {
+            return state.email;
+        },
+        getIn: state => {
+            return state.in;
+        },
+        getOut: state => {
+            return state.out;
+        }
     },
     mutations: {
         addNote: (state, payload) => {
@@ -72,6 +83,15 @@ export const store = new Vuex.Store({
         },
         setSelected: (state, payload) => {
             state.selected = payload;
+        },
+        setEmail: (state, payload) => {
+            state.email = payload;
+        },
+        setIn: (state, payload) => {
+            state.in = payload;
+        },
+        setOut: (state, payload) => {
+            state.out = payload;
         },
         updateNote: (state, payload) => {
             state.notes[state.selected].title = payload.title;

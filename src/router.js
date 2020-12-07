@@ -23,6 +23,11 @@ export default new Router({
             component: () => import("./views/Browse.vue")
         },
         {
+            path: '/login',
+            name: 'login',
+            component: () => import("./views/Login.vue")
+        },
+        {
             path: '/roadmap',
             name: 'roadmap',
             component: () => import("./views/RoadMap.vue")

@@ -31,7 +31,8 @@ export default {
       return this.$store.getters.getNotes;
     }
   },
-  methods: {},
+  methods: {
+  },
   mounted() {
     if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
   },

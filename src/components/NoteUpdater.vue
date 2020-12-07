@@ -10,7 +10,7 @@
             </span>
             <div class="tArea" contentEditable="true" v-html="this.notes[this.selected].html"></div>
             <span class="input-else">
-            <input class="writer-input" type="text" placeholder="writer" v-model="this.notes[this.selected].writer">
+            <input class="writer-input" type="text" v-model="this.notes[this.selected].writer" readonly>
             <input type="checkbox" id="due" class="duedate" v-model="due">
             <label for="due" class="due-label">due date</label>
             <input id="dat" v-if="due" type="date" v-model="this.notes[this.selected].date">

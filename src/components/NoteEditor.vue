@@ -10,9 +10,8 @@
       </span>
       <div class="tArea" contenteditable="true"></div>
       <span class="input-else">
-        <input class="writer-input" type="text" placeholder="writer" v-model="writer" />
         <input type="checkbox" id="due" class="duedate" v-model="due" />
-        <label for="due" class="due-label">due date</label>
+        <label for="due" class="due-label">date</label>
         <input v-if="due" type="date" v-model="date" />
       </span>
       <div class="selects">
@@ -69,7 +68,7 @@ export default {
       theme: "#ffffff",
       text: "",
       due: false,
-      writer: "",
+      writer: this.email,
       category: "",
       openCategory: false,
       addCategory: "",
@@ -99,6 +98,9 @@ export default {
     },
     path() {
       return this.$store.getters.getPath;
+    },
+    email() {
+      return this.$store.getters.getEmail;
     }
   },
   methods: {
@@ -124,7 +126,7 @@ export default {
           text: this.text,
           theme: this.theme,
           date: this.date,
-          writer: this.writer,
+          writer: this.email,
           category: this.category,
           display: dis,
           html: this.html,
@@ -137,7 +139,7 @@ export default {
           text: this.text,
           theme: this.theme,
           date: this.date,
-          writer: this.writer,
+          writer: this.email,
           category: this.category,
           display: dis,
           html: this.html

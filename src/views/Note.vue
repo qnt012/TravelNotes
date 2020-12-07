@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <app-header
-      @openEditor="(editorOpen = !editorOpen), reUpdaterOpen(false), reUpdaterButton(true)"
+      @openEditor="
+        (editorOpen = !editorOpen), reUpdaterOpen(false), reUpdaterButton(true)
+      "
     ></app-header>
     <app-note-search-menu @getKeyword="findKeyword"></app-note-search-menu>
     <app-note-editor
@@ -59,7 +61,6 @@ import Bar from "../components/Bar.vue";
 import NoteSearchMenu from "../components/NoteSearchMenu.vue";
 import NoteDir from "../components/NoteDirectory.vue";
 
-
 export default {
   name: "App",
   data: function () {
@@ -85,7 +86,7 @@ export default {
     },
     updaterButton() {
       return this.$store.getters.getUpdaterButton;
-    }
+    },
   },
   filters: {
     capitalize: function (value) {

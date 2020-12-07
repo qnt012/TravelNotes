@@ -80,25 +80,40 @@ export default {
     },
   },
   methods: {
+    makeCategories() {
+      const set1 = new Set();
+      for (let i = 0; i < this.notes.length; i++) {
+        if (this.notes[i].category != "") set1.add(this.notes[i].category);
+      }
+      return set1;
+    },
     getEvents() {
       const events = [];
       //const days = (max.getTime() - min.getTime()) / 86400000;
       const eventCount = this.notes.length;
-
-      console.log(this.notes);
-
-      for (let i = 0; i < eventCount; i++) {
-        const first = new Date(this.notes[i].date);
-        const second = new Date(this.notes[i].date);
-
+      const categorySet = this.makeCategories();
+      console.log("start");
+      for (let e = 0; e < categorySet.size; e++) {
+        var categoryArray = Array.from(categorySet);
+        var maxDate = new Date(-8640000000000000);
+        var minDate = new Date(8640000000000000);
+        console.log(minDate);
+        console.log(maxDate);
+        for (let i = 0; i < eventCount; i++) {
+          if (this.notes[i].category == categoryArray[e]) {
+            var da = new Date(this.notes[i].date);
+            console.log(da);
+            if (da <= minDate) minDate = da;
+            if (da >= maxDate) maxDate = da;
+          }
+        }
         events.push({
-          name: this.notes[i].category + ": " + this.notes[i].title,
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-        });
+            name: categoryArray[e],
+            start: minDate,
+            end: maxDate,
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+          });
       }
-      console.log(events);
       this.events = events;
     },
     getEventColor(event) {
