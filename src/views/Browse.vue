@@ -1,31 +1,33 @@
 <template>
   <div>
     <home-header></home-header>
-    <naver-maps
-      :height="height"
-      :width="width"
-      :mapOptions="mapOptions"
-      :initLayers="initLayers"
-      @load="onLoad">
-      <naver-info-window
-        class="info-window"
-        @load="onWindowLoad"
-        :isOpen="info"
-        :marker="marker">
-        <div class="info-window-container">
-          <h1>{{hello}}</h1>
-        </div>
-      </naver-info-window>
-      <naver-marker :lat="37" :lng="127" @click="onMarkerClicked" @load="onMarkerLoaded"/>
-      <naver-circle :lat="37" :lng="127" :radius="88600"/>
-      <naver-rectangle :south="36" :north="38" :west="126" :east="128"/>
-      <naver-ellipse :bounds="{south:36,north:38,west:126,east:128}"/>
-      <naver-polygon :paths="[[{lat:37,lng:127},{lat:38,lng:127},{lat:38,lng:129},{lat:37,lng:128}]]"/>
-      <naver-polyline :path="[{lat:37,lng:127},{lat:38,lng:129}]"/>
-      <naver-ground-overlay
-        :url="'//logoproject.naver.com/img/img_about.gif'"
-        :bounds="{south:36.7,north:36.9,west:126.5,east:127.5}"/>
+    <div id="browseTop">
+      <div id="info">{{place}}</div>
+    </div>
+    <naver-maps :height="height" :width="width" :mapOptions="mapOptions" :initLayers="initLayers" @load="onLoad">
+      <naver-marker :lat="35.83488283119064" :lng="129.21910014026193" @click="onMarkerClicked()" @mouseover="onMarkerOver('첨성대')" @mouseout="place = ''"/>
+      <naver-marker :lat="37.513152374893636" :lng="127.10271074029531" @click="onMarkerClicked()" @mouseover="onMarkerOver('롯데월드타워')" @mouseout="place = ''"/>
+      <naver-marker :lat="37.57613672244167" :lng="126.97682642865742" @click="onMarkerClicked()" @mouseover="onMarkerOver('광화문')" @mouseout="place = ''"/>
+      <naver-marker :lat="36.084609378549544" :lng="129.5556382979372" @click="onMarkerClicked()" @mouseover="onMarkerOver('호미곶')" @mouseout="place = ''"/>
+      <naver-marker :lat="35.83479346481853" :lng="129.22657274426172" @click="onMarkerClicked()" @mouseover="onMarkerOver('안압지')" @mouseout="place = ''"/>
     </naver-maps>
+    <div class="noteContainerHeader"></div>
+    <div v-if=this.search style="z-index: 1" class="noteContainer">
+      <div v-for="(note, index) in notes" :key="`note-${index}`" :id="index" class="note" :style="{ 'background-color': note.theme, display: note.display }">
+        <span>
+          <p class="note-title">{{ note.title }}</p>
+          <img id="noteImg" v-if='note.img != ""' :src="note.img" width="100%"/>
+          <p v-html="note.html" class="note-text">{{ note.text }}</p>
+        </span>
+        <div class="note-bottom">
+          <span class="date-text" v-if="note.date">due date: {{ note.date }}</span>
+          <div class="writer-text" v-if="note.writer">
+            <i class="fas fa-user"></i>
+            {{ note.writer }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -35,9 +37,10 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      width: 800,
-      height: 800,
-      info: false,
+      place: "",
+      width: "100%",
+      height: 600,
+      search: false,
       marker: null,
       count: 1,
       map: null,
@@ -45,7 +48,7 @@ export default {
       mapOptions: {
         lat: 37,
         lng: 127,
-        zoom: 10,
+        zoom: 7,
         zoomControl: true,
         zoomControlOptions: { position: "TOP_RIGHT" },
         mapTypeControl: true
@@ -62,8 +65,8 @@ export default {
     };
   },
   computed: {
-    hello() {
-      return `Hello, World! × ${this.count}`;
+    notes() {
+      return this.$store.getters.getNotes;
     }
   },
   methods: {
@@ -73,29 +76,29 @@ export default {
     onWindowLoad(that) {
       console.log(that);
     },
-    onMarkerClicked(event) {
-      this.info = !this.info;
-      console.log(event);
+    onMarkerOver(p) {
+      this.place = p;
     },
-    onMarkerLoaded(vue) {
-      this.marker = vue.marker;
+    onMarkerClicked() {
+      for (var i = 0; i < this.notes.length; i++) {
+        if (this.notes[i].predict == this.place) {
+          this.notes[i].display = "inline-block";
+        } else {
+          this.notes[i].display = "none";
+        }
+      }
+      this.search = true;
+      console.log(event);
     }
   },
   mounted() {
-    setInterval(() => this.count++, 1000);
+    if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
   },
   components: {
     homeHeader: HomeHeader
   }
 };
 </script>
-<style scoped>
-.info-window-container {
-  padding: 10px;
-  width: 300px;
-  height: 100px;
-}
-</style>
 
 <style lang="scss">
 @import "../styles/global.scss";

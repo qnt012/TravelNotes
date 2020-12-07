@@ -2,10 +2,10 @@
   <div class="homeHeader">
     <img src="../assets/logo.png" @click="moveTo('/')" />
     <ul>
-      <li @click="moveTo('/note')">My Notes</li>
-      <li @click="moveTo('/browse')">Browse</li>
-      <li>RoadMap</li>
-      <li>Callender</li>
+        <li @click="moveTo('/note')">My Notes</li>
+        <li @click="moveTo('/browse')">Browse</li>
+        <li @click="moveTo('/roadmap')">RoadMap</li>
+        <li @click="moveTo('/calendar')">Calendar</li>
     </ul>
 
     <img id="trip" src="../assets/trip.jpg" @click="buttonSwitch" />
@@ -75,13 +75,6 @@ export default {
       document.getElementById("em").innerHTML = this.email;
       this.$store.commit("setIn", false);
       this.$store.commit("setOut", true);
-      for (var i = 0; i < this.notes.length; i++) {
-        this.notes[i].display = "none";
-        if (this.notes[i].writer == this.email) {
-          console.log(i);
-          this.notes[i].display = "inline-block";
-        }
-      }
     },
     logout() {
       this.$store.commit("setIn", true);
@@ -100,6 +93,9 @@ export default {
       //document.getElementById("at").innerHTML = "";
     },
     moveTo(page) {
+      if (page == "/") {
+        location.href = "http://localhost:8080/";
+      }
       var router = this.$router;
       router.push(page);
       this.$store.commit("setEmail", document.getElementById("em").innerHTML);

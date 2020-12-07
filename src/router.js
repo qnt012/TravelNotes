@@ -27,5 +27,15 @@ export default new Router({
             name: 'login',
             component: () => import("./views/Login.vue")
         },
+        {
+            path: '/roadmap',
+            name: 'roadmap',
+            component: () => import("./views/RoadMap.vue")
+        },
+        {
+            path: '/calendar',
+            name: 'calendar',
+            component: () => import("./views/Calendar.vue")
+        }
     ]
 })

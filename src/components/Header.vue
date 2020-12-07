@@ -17,17 +17,19 @@ import router from "../router.js";
 export default {
   router,
   methods: {
-    openEditor: function () {
+    openEditor: function() {
       this.$emit("openEditor");
     },
     moveTo(page) {
+      if (page == "/") {
+        location.href = "http://localhost:8080/";
+      }
       var router = this.$router;
       router.push(page);
-      location.reload();
     },
     deleteAll() {
       this.$store.commit("clearAll");
-    },
-  },
+    }
+  }
 };
 </script>
