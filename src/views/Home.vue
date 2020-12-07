@@ -2,6 +2,7 @@
   <div class="home">
     <home-header></home-header>
     <app-banner></app-banner>
+    <div class="noteContainerHeader"></div>
     <div style="z-index: 1" class="homeNoteContainer">
       <div v-for="(note, index) in notes.reverse().slice(0,10)" :key="`note-${index}`" :id="index" class="note" :style="{ 'background-color': note.theme, display: note.display }">
           <span>

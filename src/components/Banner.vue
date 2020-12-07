@@ -2,9 +2,9 @@
     <div class="contents">
         <div class="banner">
             <ul class>
-                <li><img src="../assets/b1.png"></li>
-                <li><img src="../assets/b2.png"></li>
-                <li><img src="../assets/b3.png"></li>
+                <li><img src="../assets/banner1.png"></li>
+                <li><img src="../assets/banner2.png"></li>
+                <li><img src="../assets/banner3.png"></li>
             </ul>
         </div>
     </div>
@@ -32,7 +32,7 @@ $(document).ready(function() {
     $banner.css("height", $bannerHeight + "px");
 
     //배너의 좌측 위치를 옮겨 준다.
-    $banner.animate({ left: -$bannerWidth + "px" }, 1500, function() {
+    $banner.animate({ left: -$bannerWidth + "px" }, 3000, function() {
       //숫자는 롤링 진행되는 시간이다.
       //첫번째 이미지를 마지막 끝에 복사(이동이 아니라 복사)해서 추가한다.
       $(this).append(

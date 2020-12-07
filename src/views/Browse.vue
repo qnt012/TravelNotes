@@ -11,6 +11,7 @@
       <naver-marker :lat="36.084609378549544" :lng="129.5556382979372" @click="onMarkerClicked()" @mouseover="onMarkerOver('호미곶')" @mouseout="place = ''"/>
       <naver-marker :lat="35.83479346481853" :lng="129.22657274426172" @click="onMarkerClicked()" @mouseover="onMarkerOver('안압지')" @mouseout="place = ''"/>
     </naver-maps>
+    <div class="noteContainerHeader"></div>
     <div v-if=this.search style="z-index: 1" class="noteContainer">
       <div v-for="(note, index) in notes" :key="`note-${index}`" :id="index" class="note" :style="{ 'background-color': note.theme, display: note.display }">
         <span>
