@@ -9,13 +9,18 @@
     </ul>
 
     <img id="trip" src="../assets/trip.jpg" @click="buttonSwitch" />
-    <button id="moveLogin" @click="moveTo('/login')" v-if="this.switch">
+    <button
+      id="moveLogin"
+      @click="moveTo('/login')"
+      v-if="this.switch && this.in"
+    >
       로그인페이지
     </button>
-    <button id="Logout" @click="logout" v-if="this.switch">로그아웃</button>
+    <button id="Logout" @click="logout" v-if="this.switch && this.out">
+      로그아웃
+    </button>
     <button @click="showEm">이메일 확인</button>
     <span id="em"></span>
-    <!-- <div id="at"></div> -->
   </div>
 </template>
 
@@ -30,6 +35,11 @@ export default {
   router,
   components: {
     NaverLogin,
+  },
+  data: function () {
+    return {
+      switch: false,
+    };
   },
   mounted() {
     if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
@@ -50,20 +60,21 @@ export default {
     notes() {
       return this.$store.getters.getNotes;
     },
-    switch() {
-      return this.$store.getters.getSwitch;
+    in() {
+      return this.$store.getters.getIn;
+    },
+    out() {
+      return this.$store.getters.getOut;
     },
   },
   methods: {
     buttonSwitch() {
-      if (this.switch == false) {
-        this.$store.commit("setSwitch", true);
-      } else {
-        this.$store.commit("setSwitch", false);
-      }
+      this.switch = !this.switch;
     },
     showEm() {
       document.getElementById("em").innerHTML = this.email;
+      this.$store.commit("setIn", false);
+      this.$store.commit("setOut", true);
       for (var i = 0; i < this.notes.length; i++) {
         this.notes[i].display = "none";
         if (this.notes[i].writer == this.email) {
@@ -73,9 +84,11 @@ export default {
       }
     },
     logout() {
+      this.$store.commit("setIn", true);
+      this.$store.commit("setOut", false);
       var deleteURL =
         "https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=jyvqXeaVOVmV&client_secret=527300A0_COq1_XV33cf&access_token=" +
-        document.getElementById("at").innerHTML +
+        localStorage.getItem("com.naver.nid.access_token") +
         "&service_provider=NAVER";
       location.href = deleteURL;
       location.href = "http://nid.naver.com/nidlogin.logout";
