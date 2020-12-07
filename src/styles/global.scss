@@ -383,11 +383,20 @@ body {
 }
 
 #nlogin {
-    cursor: pointer;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+}
+
+#trip {
+    width: 30px;
+    height: 30px;
     float: right;
     margin-left: auto;
-    margin-right: 30px;
-    visibility: visible;
+}
+
+#em {
+    margin-left: 10px;
 }
 
 .homeHeader {

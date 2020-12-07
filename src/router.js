@@ -22,5 +22,10 @@ export default new Router({
             name: 'browse',
             component: () => import("./views/Browse.vue")
         },
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import("./views/Login.vue")
+        },
     ]
 })
