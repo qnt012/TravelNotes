@@ -10,7 +10,7 @@
         button-color="white"
         :callbackFunction="callbackFunction"
       />
-      <button @click="[setem(), status()]">확인</button>
+      <button @click="status">확인</button>
       <span id="em"></span>
       <button @click="moveTo('/')">홈페이지로</button>
     </div>
@@ -81,9 +81,10 @@ export default {
         }
       });
     },
-    setem() {
-      this.$store.commit("setEmail", document.getElementById("em").innerHTML);
-    },
+    // setem() {
+    //   this.$store.commit("setEmail", document.getElementById("em").innerHTML);
+    //   console.log(this.email);
+    // },
   },
 };
 </script>

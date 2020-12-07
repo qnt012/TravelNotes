@@ -15,7 +15,7 @@
     <button id="Logout" @click="logout" v-if="this.switch">로그아웃</button>
     <button @click="showEm">이메일 확인</button>
     <span id="em"></span>
-    <div id="at"></div>
+    <!-- <div id="at"></div> -->
   </div>
 </template>
 
@@ -33,6 +33,15 @@ export default {
   },
   mounted() {
     if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
+  },
+  watch: {
+    notes: {
+      handler() {
+        var newNotes = this.notes;
+        localStorage.setItem("notes", JSON.stringify(newNotes));
+      },
+      deep: true,
+    },
   },
   computed: {
     email() {
@@ -55,6 +64,13 @@ export default {
     },
     showEm() {
       document.getElementById("em").innerHTML = this.email;
+      for (var i = 0; i < this.notes.length; i++) {
+        this.notes[i].display = "none";
+        if (this.notes[i].writer == this.email) {
+          console.log(i);
+          this.notes[i].display = "inline-block";
+        }
+      }
     },
     logout() {
       var deleteURL =
@@ -68,7 +84,7 @@ export default {
       localStorage.removeItem("com.naver.nid.oauth.state_token");
 
       document.getElementById("em").innerHTML = "";
-      document.getElementById("at").innerHTML = "";
+      //document.getElementById("at").innerHTML = "";
     },
     moveTo(page) {
       var router = this.$router;

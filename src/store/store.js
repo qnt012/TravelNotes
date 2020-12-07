@@ -14,8 +14,7 @@ export const store = new Vuex.Store({
         updaterButton: true,
         email: "",
         switch: false,
-        // logo: true,
-        confirmEmail: false,
+        confirm: false,
     },
     getters: {
         getNotes: state => {
@@ -45,9 +44,9 @@ export const store = new Vuex.Store({
         getSwitch: state => {
             return state.switch;
         },
-        // getLogo: state => {
-        //     return state.logo;
-        // }
+        getConfirm: state => {
+            return state.confirm;
+        }
     },
     mutations: {
         addNote: (state, payload) => {
@@ -91,9 +90,9 @@ export const store = new Vuex.Store({
         setSwitch: (state, payload) => {
             state.switch = payload;
         },
-        // setLogo: (state, payload) => {
-        //     state.logo = payload;
-        // },
+        setConfirm: (state, payload) => {
+            state.confirm = payload;
+        },
         updateNote: (state, payload) => {
             state.notes[state.selected].title = payload.title;
             state.notes[state.selected].text = payload.text;
