@@ -82,7 +82,6 @@ export default {
       });
     },
     setem() {
-      console.log(localStorage.getItem("com.naver.nid.access_token"));
       this.$store.commit("setEmail", document.getElementById("em").innerHTML);
     },
   },

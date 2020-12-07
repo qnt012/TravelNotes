@@ -8,10 +8,12 @@
       <li>Callender</li>
     </ul>
 
-    <img id="trip" src="../assets/trip.jpg" @click="buttonSwitch"/>
-    <button id="moveLogin" @click="moveTo('/login')" v-if="this.switch">로그인페이지</button>
+    <img id="trip" src="../assets/trip.jpg" @click="buttonSwitch" />
+    <button id="moveLogin" @click="moveTo('/login')" v-if="this.switch">
+      로그인페이지
+    </button>
     <button id="Logout" @click="logout" v-if="this.switch">로그아웃</button>
-    <button @click="status">이메일 확인</button>
+    <button @click="showEm">이메일 확인</button>
     <span id="em"></span>
     <div id="at"></div>
   </div>
@@ -30,8 +32,7 @@ export default {
     NaverLogin,
   },
   mounted() {
-    if (localStorage.getItem("notes")) 
-      this.$store.commit("restoreNote");
+    if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
   },
   computed: {
     email() {
@@ -46,31 +47,14 @@ export default {
   },
   methods: {
     buttonSwitch() {
-      if (this.switch == false){
+      if (this.switch == false) {
         this.$store.commit("setSwitch", true);
       } else {
         this.$store.commit("setSwitch", false);
       }
     },
-    status() {
-      const naverLogin = new naver.LoginWithNaverId({
-        clientId: "1QKUkUg9yH08n9vN4Zhz",
-        isPopup: false,
-      });
-      naverLogin.init();
-      naverLogin.getLoginStatus(function (status) {
-        if (status) {
-          const email = naverLogin.user.getEmail();
-          document.getElementById("em").innerHTML = email;
-          console.log(email);
-
-          const token = naverLogin.accessToken.accessToken;
-          document.getElementById("at").innerHTML = token;
-          console.log(token);
-        } else {
-          console.log("AccessToken이 올바르지 않습니다.");
-        }
-      });
+    showEm() {
+      document.getElementById("em").innerHTML = this.email;
     },
     logout() {
       var deleteURL =
@@ -91,7 +75,6 @@ export default {
       router.push(page);
       this.$store.commit("setEmail", document.getElementById("em").innerHTML);
     },
-
   },
 };
 </script>

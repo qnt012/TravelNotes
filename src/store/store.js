@@ -12,7 +12,7 @@ export const store = new Vuex.Store({
         selected: -1,
         updaterOpen: false,
         updaterButton: true,
-        email: "eeee",
+        email: "",
         switch: false,
         // logo: true,
         confirmEmail: false,
