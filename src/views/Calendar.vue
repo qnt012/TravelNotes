@@ -1,26 +1,9 @@
 <template>
   <v-app>
     <cal-header></cal-header>
-    <v-sheet
-      tile
-      height="54"
-      class="d-flex"
-    >
-      <v-btn
-        class="ma-2"
-        @click="$refs.calendar.prev()"
-      >
-      prev
-      </v-btn>
-      <v-select
-        v-model="type"
-        :items="types"
-        dense
-        outlined
-        hide-details
-        class="ma-2"
-        label="type"
-      ></v-select>
+    <v-sheet tile height="54" class="d-flex">
+      <v-btn class="ma-2" @click="$refs.calendar.prev()">prev</v-btn>
+      <v-select v-model="type" :items="types" dense outlined hide-details class="ma-2" label="type"></v-select>
       <v-select
         v-model="mode"
         :items="modes"
@@ -40,12 +23,7 @@
         class="ma-2"
       ></v-select>
       <v-spacer></v-spacer>
-      <v-btn
-        class="ma-2"
-        @click="$refs.calendar.next()"
-      >
-      next
-      </v-btn>
+      <v-btn class="ma-2" @click="$refs.calendar.next()">next</v-btn>
     </v-sheet>
     <v-sheet height="800">
       <v-calendar
@@ -68,6 +46,8 @@ import CalHeader from "../components/CalHeader.vue";
 import "vuetify/dist/vuetify.min.css";
 export default {
   data: () => ({
+    colorNum: 0,
+    categoryColor: {},
     type: "month",
     types: ["month"],
     mode: "stack",
@@ -77,7 +57,7 @@ export default {
       { text: "Sun - Sat", value: [0, 1, 2, 3, 4, 5, 6] },
       { text: "Mon - Sun", value: [1, 2, 3, 4, 5, 6, 0] },
       { text: "Mon - Fri", value: [1, 2, 3, 4, 5] },
-      { text: "Mon, Wed, Fri", value: [1, 3, 5] }
+      { text: "Mon, Wed, Fri", value: [1, 3, 5] },
     ],
     value: "",
     events: [],
@@ -88,47 +68,37 @@ export default {
       "cyan",
       "green",
       "orange",
-      "grey darken-1"
-    ]
+      "grey darken-1",
+    ],
   }),
   components: {
-    calHeader: CalHeader
+    calHeader: CalHeader,
   },
   computed: {
     notes() {
       return this.$store.getters.getNotes;
     },
-    categories() {
-      return this.$store.getters.getCategories;
-    }
   },
   methods: {
-    findCategoryIndex(c) {
-      for (var i = 0; i < this.categories.length; i++)
-        if (this.categories[i] == c) return i;
-    },
     getEvents() {
       const events = [];
       //const days = (max.getTime() - min.getTime()) / 86400000;
       const eventCount = this.notes.length;
 
       console.log(this.notes);
-      console.log(this.categories);
 
       for (let i = 0; i < eventCount; i++) {
         const first = new Date(this.notes[i].date);
         const second = new Date(this.notes[i].date);
 
-        console.log();
-
         events.push({
           name: this.notes[i].category + ": " + this.notes[i].title,
           start: first,
           end: second,
-          color: this.colors[this.findCategoryIndex(this.notes[i].category) % 7]
+          color: this.colors[this.rnd(0, this.colors.length - 1)],
         });
       }
-
+      console.log(events);
       this.events = events;
     },
     getEventColor(event) {
@@ -136,12 +106,10 @@ export default {
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
-    }
+    },
   },
   mounted() {
     if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
-    if (localStorage.getItem("categories"))
-      this.$store.commit("restoreCategory");
-  }
+  },
 };
 </script>
