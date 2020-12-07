@@ -75,6 +75,13 @@ export default {
       document.getElementById("em").innerHTML = this.email;
       this.$store.commit("setIn", false);
       this.$store.commit("setOut", true);
+      for (var i = 0; i < this.notes.length; i++) {
+        this.notes[i].display = "none";
+        if (this.notes[i].writer == this.email) {
+          console.log(i);
+          this.notes[i].display = "inline-block";
+        }
+      }
     },
     logout() {
       this.$store.commit("setIn", true);

@@ -139,7 +139,7 @@ export default {
           text: this.text,
           theme: this.theme,
           date: this.date,
-          writer: this.writer,
+          writer: this.email,
           category: this.category,
           display: dis,
           html: this.html

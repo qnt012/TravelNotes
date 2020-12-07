@@ -1,5 +1,5 @@
 <template>
-  <div class="home" @load="lo">
+  <div class="home">
     <home-header></home-header>
     <app-banner></app-banner>
     <div class="noteContainerHeader"></div>
@@ -32,16 +32,6 @@ export default {
     }
   },
   methods: {
-    lo() {
-      for (var i = 0; i < this.notes.length; i++) {
-        this.notes[i].display = "none";
-        if (this.notes[i].writer == this.email) {
-          console.log(i);
-          this.notes[i].display = "inline-block";
-        }
-      }
-    }
-
   },
   mounted() {
     if (localStorage.getItem("notes")) this.$store.commit("restoreNote");
